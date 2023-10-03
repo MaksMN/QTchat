@@ -6,17 +6,36 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+set(TS_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/translations/my_ru.ts)
+file(GLOB_RECURSE TS_SOURCES "*.cpp" "*.h" ".ui")
+add_custom_target(translations)
+#по сути, при билде для каждого .ts файла вызывается
+#утилита lupdate.exe
+foreach(_ts_file ${TS_FILES})
+    get_filename_component(_ts_name ${_ts_file} NAME_WE)
+    execute_process(
+        COMMAND lupdate -no-obsolete ${CMAKE_CURRENT_SOURCE_DIR} -ts ${_ts_file}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+add_custom_target(translate_${_ts_name} DEPENDS ${_ts_file})
+add_dependencies(translations translate_${_ts_name})
+endforeach()
+
+#подключаем файлы трансляции(переводов)
+qt_add_translation(QM_FILES ${TS_FILES})
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+    main.cpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -33,13 +52,13 @@ else()
         add_library(Server SHARED
             ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(Server
-            ${PROJECT_SOURCES}
-        )
-    endif()
+    # Define properties for Android with Qt 5 after find_package() calls as:
+    #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+else()
+    add_executable(Server
+        ${PROJECT_SOURCES}
+    )
+endif()
 endif()
 
 target_link_libraries(Server PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
@@ -48,7 +67,7 @@ target_link_libraries(Server PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 if(${QT_VERSION} VERSION_LESS 6.1.0)
-  set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Server)
+    set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.Server)
 endif()
 set_target_properties(Server PROPERTIES
     ${BUNDLE_ID_OPTION}
