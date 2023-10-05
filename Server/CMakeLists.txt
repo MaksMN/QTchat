@@ -44,6 +44,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         strings.h strings.cpp
 
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Server APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -89,3 +90,25 @@ install(TARGETS Server
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Server)
 endif()
+
+# префикс режима сборки
+if(CMAKE_BUILD_TYPE MATCHES "Debug")
+    set(BUILD_PREFIX "debug")
+endif()
+if(CMAKE_BUILD_TYPE MATCHES "Release")
+    set(BUILD_PREFIX "release")
+endif()
+
+### Add library ChatStructs
+file(GLOB_RECURSE CHAT_STRUCTS_LIBS "../ChatStructs/lib/${BUILD_PREFIX}/*.*")
+# Копируем файлы библиотеки ChatStructs в папку сборки проекта.
+foreach(header_file ${CHAT_STRUCTS_LIBS})
+    get_filename_component(header_name ${header_file} NAME)
+    configure_file(${header_file} ${CMAKE_CURRENT_SOURCE_DIR}/build/${BUILD_PREFIX} COPYONLY)
+endforeach()
+
+include_directories(../ChatStructs/include)
+link_directories(../ChatStructs/lib/${BUILD_PREFIX})
+target_link_libraries(Server PRIVATE ChatStructs)
+
+
