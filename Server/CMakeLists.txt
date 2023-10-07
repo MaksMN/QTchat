@@ -32,17 +32,18 @@ endforeach()
 qt_add_translation(QM_FILES ${TS_FILES})
 
 set(PROJECT_SOURCES
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+    MainWindow/main.cpp
+    MainWindow/mainwindow.cpp
+    MainWindow/mainwindow.h
+    MainWindow/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Server
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        strings.h strings.cpp
+        Strings/strings.h Strings/strings.cpp
+        DB/db.h DB/db.cpp
 
 
     )
@@ -99,16 +100,19 @@ if(CMAKE_BUILD_TYPE MATCHES "Release")
     set(BUILD_PREFIX "release")
 endif()
 
-### Add library ChatStructs
+###### Add library ChatStructs ######
 file(GLOB_RECURSE CHAT_STRUCTS_LIBS "../ChatStructs/lib/${BUILD_PREFIX}/*.*")
-# Копируем файлы библиотеки ChatStructs в папку сборки проекта.
-foreach(header_file ${CHAT_STRUCTS_LIBS})
-    get_filename_component(header_name ${header_file} NAME)
-    configure_file(${header_file} ${CMAKE_CURRENT_SOURCE_DIR}/build/${BUILD_PREFIX} COPYONLY)
+# Copy the ChatStructs library files to the project build folder.
+foreach(ChatStructs_lib_file ${CHAT_STRUCTS_LIBS})
+    get_filename_component(header_name ${ChatStructs_lib_file} NAME)
+    configure_file(${ChatStructs_lib_file} ${CMAKE_BINARY_DIR} COPYONLY)
 endforeach()
 
 include_directories(../ChatStructs/include)
 link_directories(../ChatStructs/lib/${BUILD_PREFIX})
 target_link_libraries(Server PRIVATE ChatStructs)
+#####################################
 
-
+###### Misc ######
+include_directories(../Misc)
+##################
