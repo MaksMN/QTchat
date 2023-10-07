@@ -4,6 +4,7 @@
 #include "ChatStructs_global.h"
 #include "SHA1.h"
 #include "flags.h"
+#include "misc.h"
 #include <string>
 
 typedef unsigned int uint;
@@ -67,7 +68,7 @@ public:
          ullong registered,
          ullong session_key);
 
-    ullong getId();
+    ullong id();
 
     /*!
      * \brief Пользователь есть в базе данных
@@ -93,8 +94,17 @@ public:
      */
     std::string FullName();
 
-    void setPass(const std::string &pass);
-    bool validatePass(const std::string &pass);
+    /*!
+     * \brief создает новые соль и хеш пароля. 
+     * Внимание! Пароль по ссылке уничтожается, его нельзя использовать повторно.
+     */
+    void setPass(std::string &pass);
+
+    /*!
+     * \brief Проверяет пароль.
+     * Внимание! Пароль по ссылке уничтожается, его нельзя использовать повторно.
+     */
+    bool validatePass(std::string &pass);
 
     user::status status();
     void setStatus(user::status status);

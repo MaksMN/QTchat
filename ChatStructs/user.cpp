@@ -2,7 +2,7 @@
 
 chat::User::User() {}
 
-ullong chat::User::getId()
+ullong chat::User::id()
 {
     return _id;
 }
@@ -58,11 +58,25 @@ std::string chat::User::FullName()
     return name;
 }
 
-void chat::User::setPass(const std::string &pass) {}
-
-bool chat::User::validatePass(const std::string &pass)
+void chat::User::setPass(std::string &pass)
 {
-    return bool();
+    _pass_salt = sha1.hash(std::to_string(Misc::randomKey()));
+    _pass_hash = sha1.hash(pass + _pass_salt);
+    // уничтожение пароля
+    for (int i = 0; i < pass.size(); ++i) {
+        pass.data()[i] = '\0';
+    }
+}
+
+bool chat::User::validatePass(std::string &pass)
+{
+    if (_pass_hash.empty())
+        return false;
+    std::string pass_hash = sha1.hash(pass + _pass_salt);
+    // уничтожение пароля
+    for (int i{0}; i < pass.size(); i++)
+        pass.data()[i] = '\0';
+    return pass_hash == _pass_hash;
 }
 
 chat::user::status chat::User::status()
