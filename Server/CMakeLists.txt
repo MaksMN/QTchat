@@ -13,7 +13,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 set(TS_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/translations/my_ru.ts)
+    ${CMAKE_CURRENT_SOURCE_DIR}/translations/qtChat_ru.ts)
 file(GLOB_RECURSE TS_SOURCES "*.cpp" "*.h" ".ui")
 add_custom_target(translations)
 #по сути, при билде для каждого .ts файла вызывается
@@ -28,6 +28,8 @@ add_custom_target(translate_${_ts_name} DEPENDS ${_ts_file})
 add_dependencies(translations translate_${_ts_name})
 endforeach()
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/translations/qtChat_ru.qm ${CMAKE_BINARY_DIR}/translations/qtChat_ru.qm COPYONLY)
+
 #подключаем файлы трансляции(переводов)
 qt_add_translation(QM_FILES ${TS_FILES})
 
@@ -38,6 +40,8 @@ set(PROJECT_SOURCES
     MainWindow/mainwindow.ui
 )
 
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resources.rc")
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Server
         MANUAL_FINALIZATION
@@ -46,9 +50,15 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         DB/db.h DB/db.cpp
         ../Misc/SHA1.cpp ../Misc/SHA1.h
         ../Misc/misc.cpp ../Misc/misc.h
-
+        resources.rc
+        ${APP_ICON_RESOURCE_WINDOWS}
+        resources.qrc
 
     )
+
+
+
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Server APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
@@ -118,3 +128,8 @@ target_link_libraries(Server PRIVATE ChatStructs)
 ###### Misc ######
 include_directories(../Misc)
 ##################
+
+######## server.ini ########
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/server.ini ${CMAKE_BINARY_DIR} COPYONLY)
+############################
+

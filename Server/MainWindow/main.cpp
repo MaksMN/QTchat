@@ -1,39 +1,31 @@
 #include <QApplication>
 #include <QTranslator>
-
+#include "../DB/db.h"
 #include "mainwindow.h"
-#include "misc.h"
+const char config_file[]{"server.ini"};
 
-enum flgs {
-    f1 = 1,
-    f2 = 2,
-    f3 = 4
+class TranslationManager
+{
+public:
+    static QString getTranslatedString(const QString &key)
+    {
+        return QCoreApplication::translate("TranslationManager", key.toUtf8().constData());
+    }
 
+    static QString staticString() { return getTranslatedString("Hello, World!"); }
 };
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
     QTranslator translator;
-    auto t = translator.load("my_ru.qm", "translations/");
+    auto t = translator.load("qtChat_ru.qm", "translations/");
     if(t)
         a.installTranslator(&translator);
+    DB db;
 
-    while (1) {
-        auto v1 = Misc::randomKey();
-        auto v2 = Misc::randomKey();
-        auto v3 = Misc::randomKey();
-        auto v4 = Misc::randomKey();
-        auto v5 = Misc::randomKey();
-        auto v6 = Misc::randomKey();
-        auto v7 = Misc::randomKey();
-        auto v8 = Misc::randomKey();
-        auto v9 = Misc::randomKey();
-    }
     MainWindow w;
     w.show();    
-    w.setWindowTitle("test");
     return a.exec();
 }
