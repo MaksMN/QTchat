@@ -1,0 +1,12 @@
+#ifndef CHATSTRUCTS_GLOBAL_H
+#define CHATSTRUCTS_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(CHATSTRUCTS_LIBRARY)
+#  define CHATSTRUCTS_EXPORT Q_DECL_EXPORT
+#else
+#  define CHATSTRUCTS_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // CHATSTRUCTS_GLOBAL_H
