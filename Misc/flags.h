@@ -1,7 +1,6 @@
 #ifndef FLAGS_H
 #define FLAGS_H
 
-namespace chat {
 /*!
  * \brief The Flags class
  */
@@ -29,23 +28,21 @@ inline T Flags<T>::flagsReplace(T sourceFlags, T addedFlags, T deletedFlags)
 }
 
 template<typename T>
-inline bool chat::Flags<T>::hasFlag(T sourceFlags, T flag)
+inline bool Flags<T>::hasFlag(T sourceFlags, T flag)
 {
     return sourceFlags & flag;
 }
 
 template<typename T>
-inline T chat::Flags<T>::removeFlag(T sourceFlags, T flag)
+inline T Flags<T>::removeFlag(T sourceFlags, T flag)
 {
     return (T) (sourceFlags & ~flag);
 }
 
 template<typename T>
-inline T chat::Flags<T>::addFlag(T sourceFlags, T flag)
+inline T Flags<T>::addFlag(T sourceFlags, T flag)
 {
     return (T) (sourceFlags | flag);
 }
-
-} // namespace chat
 
 #endif // FLAGS_H
