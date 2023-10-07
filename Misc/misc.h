@@ -2,6 +2,7 @@
 #define MISC_H
 #include <cstdlib>
 #include <cstring>
+#include <map>
 #include <time.h>
 
 typedef unsigned int uint;
@@ -12,6 +13,8 @@ class Misc
 public:
     Misc();
     static ullong randomKey();
+
+    static void createConfigMap();
 };
 
 #endif // MISC_H
