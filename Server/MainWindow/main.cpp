@@ -1,8 +1,8 @@
 #include <QApplication>
 #include <QTranslator>
-#include "flags.h"
+
 #include "mainwindow.h"
-#include "user.h"
+#include "misc.h"
 
 enum flgs {
     f1 = 1,
@@ -20,12 +20,18 @@ int main(int argc, char *argv[])
     auto t = translator.load("my_ru.qm", "translations/");
     if(t)
         a.installTranslator(&translator);
-    chat::User u;
-    u.ban();
 
-    chat::Flags<flgs> f;
-    auto ff = f.flagsReplace(flgs::f1, flgs::f2, flgs::f3);
-
+    while (1) {
+        auto v1 = Misc::randomKey();
+        auto v2 = Misc::randomKey();
+        auto v3 = Misc::randomKey();
+        auto v4 = Misc::randomKey();
+        auto v5 = Misc::randomKey();
+        auto v6 = Misc::randomKey();
+        auto v7 = Misc::randomKey();
+        auto v8 = Misc::randomKey();
+        auto v9 = Misc::randomKey();
+    }
     MainWindow w;
     w.show();    
     w.setWindowTitle("test");

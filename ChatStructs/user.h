@@ -2,6 +2,7 @@
 #define USER_H
 #include <QObject>
 #include "ChatStructs_global.h"
+#include "SHA1.h"
 #include "flags.h"
 #include <string>
 
@@ -35,6 +36,7 @@ private:
     ullong _session_key = 0;
 
     Flags<user::status> flags;
+    SHA1 sha1;
 
 public:
     User();
