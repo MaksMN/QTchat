@@ -44,6 +44,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         Strings/strings.h Strings/strings.cpp
         DB/db.h DB/db.cpp
+        ../Misc/SHA1.cpp ../Misc/SHA1.h
+        ../Misc/misc.cpp ../Misc/misc.h
 
 
     )
