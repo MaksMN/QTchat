@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <QEvent>
+#include <QLabel>
 #include <QMainWindow>
 #include <QTranslator>
 
@@ -15,10 +16,15 @@ class MainWindow : public QMainWindow
 
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
+    QString s = "test;";
+    QString *s2 = &s;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
