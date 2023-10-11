@@ -3,12 +3,9 @@
 
 #include <QMessageBox>
 #include <QObject>
-#include "../strings/strings.h"
-#include "SimpleIni.h"
 
 typedef unsigned int uint;
 typedef unsigned long long ullong;
-const extern char config_file[];
 
 class DB
 {
