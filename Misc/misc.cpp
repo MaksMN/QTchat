@@ -1,5 +1,5 @@
 #include "misc.h"
-
+#include "random"
 Misc::Misc()
 {
     
@@ -7,12 +7,8 @@ Misc::Misc()
 
 ullong Misc::randomKey()
 {
-    char buf[8];
-    ullong key = std::abs(std::rand());
-    std::srand(time(NULL) - key);
-    for (int i{0}; i < 8; i++) {
-        buf[i] = std::abs(std::rand());
-    }
-    memcpy(&key, buf, 8);
-    return key;
+    std::random_device rd;
+    std::mt19937_64 generator(rd());
+    std::uniform_int_distribution<unsigned long long> distribution;
+    return distribution(generator);
 }
