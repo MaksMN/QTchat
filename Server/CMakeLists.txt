@@ -12,11 +12,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+
+###### Перевод #####
 set(TS_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/translations/qtChat_ru.ts)
 file(GLOB_RECURSE TS_SOURCES "*.cpp" "*.h" ".ui")
 add_custom_target(translations)
-#по сути, при билде для каждого .ts файла вызывается
+# при билде для каждого .ts файла вызывается
 #утилита lupdate.exe
 foreach(_ts_file ${TS_FILES})
     get_filename_component(_ts_name ${_ts_file} NAME_WE)
@@ -27,11 +29,14 @@ foreach(_ts_file ${TS_FILES})
 add_custom_target(translate_${_ts_name} DEPENDS ${_ts_file})
 add_dependencies(translations translate_${_ts_name})
 endforeach()
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/translations/qtChat_ru.qm ${CMAKE_BINARY_DIR}/translations/qtChat_ru.qm COPYONLY)
-
 #подключаем файлы трансляции(переводов)
 qt_add_translation(QM_FILES ${TS_FILES})
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/translations/qtChat_ru.qm ${CMAKE_BINARY_DIR}/translations/qtChat_ru.qm COPYONLY)
+####################
+
+###### иконка приложения ######
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/app.ico ${CMAKE_BINARY_DIR}/app.ico COPYONLY)
+###############################
 
 set(PROJECT_SOURCES
     MainWindow/main.cpp
@@ -53,11 +58,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         resources.rc
         ${APP_ICON_RESOURCE_WINDOWS}
         resources.qrc
-
+        ../Misc/CircularQueue.h
     )
-
-
-
 
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Server APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
