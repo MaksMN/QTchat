@@ -43,6 +43,15 @@ public:
     User();
 
     /*!
+     * \brief User Конструктор для использования на клиенте. Скрыты секретные данные.
+     */
+    User(ullong id,
+         const std::string &login,
+         const std::string &first_name,
+         const std::string &last_name,
+         user::status status);
+
+    /*!
      * \brief Конструктор создания нового пользователя для добавления в базу данных
      */
     User(const std::string &login,
@@ -123,7 +132,8 @@ public:
     bool isServiceAdmin();
     void toAdmin();
     void toUser();
-};
-#endif // USER_H
 
-} // namespace Chat
+    QString getGroup();
+};
+} // namespace chat
+#endif // USER_H

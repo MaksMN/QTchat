@@ -154,6 +154,14 @@ void chat::User::toUser()
     _status = flags.flagsReplace(_status, user::status::common, user::status::admin);
 }
 
+QString chat::User::getGroup()
+{
+    if (isAdmin())
+        return "Admin";
+    else
+        return "User";
+}
+
 namespace chat {
 User::User(const std::string &login,
            const std::string &email,
@@ -193,6 +201,18 @@ User::User(bool init,
     , _pass_salt(pass_salt)
     , _registered(std::move(registered))
     , _session_key(std::move(session_key))
+{}
+
+User::User(ullong id,
+           const std::string &login,
+           const std::string &first_name,
+           const std::string &last_name,
+           user::status status)
+    : _id(std::move(id))
+    , _login(login)
+    , _first_name(first_name)
+    , _last_name(last_name)
+    , _status(status)
 {}
 
 } // namespace chat
