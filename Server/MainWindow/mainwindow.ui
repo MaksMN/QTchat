@@ -58,7 +58,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QScrollArea" name="scrollArea">
+         <widget class="QScrollArea" name="scrollUsersList">
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -88,7 +88,7 @@
             <height>66</height>
            </size>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>9</x>
@@ -108,21 +108,21 @@
             <item>
              <layout class="QGridLayout" name="gridLayout">
               <item row="0" column="0">
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="btnUserDelete">
                 <property name="text">
                  <string>Delete</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QPushButton" name="pushButton_2">
+               <widget class="QPushButton" name="btnUserBan">
                 <property name="text">
                  <string>Ban</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="2">
-               <widget class="QPushButton" name="pushButton_3">
+               <widget class="QPushButton" name="btnUserUnlogin">
                 <property name="text">
                  <string>Unlogin</string>
                 </property>
@@ -170,7 +170,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QScrollArea" name="scrollArea_2">
+         <widget class="QScrollArea" name="scrollMessageList">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>1</horstretch>
@@ -206,7 +206,7 @@
             <height>66</height>
            </size>
           </property>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>9</x>
@@ -226,14 +226,14 @@
             <item>
              <layout class="QFormLayout" name="formLayout">
               <item row="0" column="0">
-               <widget class="QPushButton" name="pushButton_4">
+               <widget class="QPushButton" name="btnMessageDelete">
                 <property name="text">
                  <string>Delete</string>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
-               <widget class="QPushButton" name="pushButton_5">
+               <widget class="QPushButton" name="btnMessageHide">
                 <property name="text">
                  <string>Hide</string>
                 </property>

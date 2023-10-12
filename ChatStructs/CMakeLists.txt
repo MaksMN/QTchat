@@ -24,7 +24,10 @@ add_library(ChatStructs SHARED
     ../Misc/SHA1.cpp ../Misc/SHA1.h
     ../Misc/flags.h
     ../Misc/misc.h ../Misc/misc.cpp
-    userwidget.h userwidget.cpp userwidget.ui
+
+    widgetlabel.h widgetlabel.cpp
+    widgetlist.h widgetlist.cpp widgetlist.ui
+
 )
 
 target_link_libraries(ChatStructs PRIVATE Qt${QT_VERSION_MAJOR}::Core
