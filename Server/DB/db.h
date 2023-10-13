@@ -21,6 +21,7 @@ protected:
 
 public:
     DB();
+    void updateConfig();
 
     virtual ~DB() = default;
 };
