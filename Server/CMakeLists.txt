@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
+find_package(Qt6 COMPONENTS Sql REQUIRED)
 
 ###### Перевод #####
 set(TS_FILES
@@ -59,6 +60,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${APP_ICON_RESOURCE_WINDOWS}
         resources.qrc
         ../Misc/CircularQueue.h
+        readme.md
+        ServerSettings/serversettings.h ServerSettings/serversettings.cpp ServerSettings/serversettings.ui
     )
 
 # Define target properties for Android with Qt 6 as:
@@ -127,11 +130,12 @@ link_directories(../ChatStructs/lib/${BUILD_PREFIX})
 target_link_libraries(Server PRIVATE ChatStructs)
 #####################################
 
-###### Misc ######
-include_directories(../Misc)
-##################
+###### includes ######
+include_directories(../Misc Strings DB MainWindow ServerSettings)
+
 
 ######## server.ini ########
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/server.ini ${CMAKE_BINARY_DIR} COPYONLY)
 ############################
 
+target_link_libraries(Server PRIVATE Qt6::Sql)
