@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QLabel>
 #include <QVBoxLayout>
+#include "../ServerSettings/serversettings.h"
 #include "./ui_mainwindow.h"
 #include "user.h"
 #include "userwidget.h"
@@ -27,4 +28,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked() {}
+void MainWindow::on_actionShut_Down_triggered()
+{
+    close();
+}
+
+void MainWindow::on_actionServer_Settings_triggered()
+{
+    ServerSettings ss(this);
+    ss.show();
+    ss.exec();
+}

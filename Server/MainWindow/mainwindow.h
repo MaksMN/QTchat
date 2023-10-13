@@ -20,7 +20,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_actionShut_Down_triggered();
+
+    void on_actionServer_Settings_triggered();
 
 private:
     QString s = "test;";

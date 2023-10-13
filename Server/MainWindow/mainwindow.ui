@@ -230,13 +230,26 @@
     <property name="title">
      <string>Main</string>
     </property>
+    <addaction name="actionServer_Settings"/>
+    <addaction name="separator"/>
     <addaction name="actionShut_Down"/>
    </widget>
    <addaction name="menuMain"/>
   </widget>
   <action name="actionShut_Down">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Shut Down</string>
+   </property>
+  </action>
+  <action name="actionServer_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Server Settings</string>
    </property>
   </action>
  </widget>
