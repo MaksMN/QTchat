@@ -22,11 +22,13 @@ public:
     static void iniWrite(const QString &&section,
                          const QString &&parameter,
                          const QString &value,
-                         CSimpleIniA *ini);
+                         CSimpleIniA *ini,
+                         std::string path);
     static void iniWrite(const QString &section,
                          const QString &parameter,
                          int value,
-                         CSimpleIniA *ini);
+                         CSimpleIniA *ini,
+                         std::string path);
 };
 
 #endif // MISC_H
