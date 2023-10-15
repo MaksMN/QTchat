@@ -59,9 +59,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         resources.rc
         ${APP_ICON_RESOURCE_WINDOWS}
         resources.qrc
-        ../Misc/CircularQueue.h
+        ../Misc/circularqueue.h
         readme.md
         ServerSettings/serversettings.h ServerSettings/serversettings.cpp ServerSettings/serversettings.ui
+        Console/console.h Console/console.cpp
     )
 
 # Define target properties for Android with Qt 6 as:
@@ -131,7 +132,7 @@ target_link_libraries(Server PRIVATE ChatStructs)
 #####################################
 
 ###### includes ######
-include_directories(../Misc Strings DB MainWindow ServerSettings)
+include_directories(../Misc Strings DB MainWindow ServerSettings Console)
 
 
 ######## server.ini ########
