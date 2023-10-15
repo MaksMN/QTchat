@@ -12,7 +12,7 @@ ServerSettings::ServerSettings(QWidget *parent) :
     ui->setupUi(this);
 
     changes_allowed = false;
-    SI_Error rc = ini.LoadFile("server.ini");
+    SI_Error rc = ini.LoadFile(ini_path.data());
     if (rc < 0) {
         Misc::msgBox(Strings::SERVER_INI_NOTFOUND, Strings::SETTINGS_CANNOT_BE_SAVED);
     } else {
@@ -39,46 +39,60 @@ void ServerSettings::on_sv_address_textEdited(const QString &arg1)
 {
     if (!changes_allowed)
         return;
-    Misc::iniWrite("GENERAL", "sv_address", arg1, &ini);
+    Misc::iniWrite("GENERAL", "sv_address", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_sv_port_valueChanged(int arg1)
 {
     if (!changes_allowed)
         return;
-    Misc::iniWrite("GENERAL", "sv_port", arg1, &ini);
+    Misc::iniWrite("GENERAL", "sv_port", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_address_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "server", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "server", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_port_valueChanged(int arg1)
 {
-    Misc::iniWrite("DB", "port", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "port", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_user_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "dbuser", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "dbuser", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_pass_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "dbpass", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "dbpass", arg1, &ini, ini_path);
 }
 void ServerSettings::on_db_name_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "dbname", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "dbname", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_odbc_driver_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "odbc_driver", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "odbc_driver", arg1, &ini, ini_path);
 }
 
 void ServerSettings::on_db_charset_textEdited(const QString &arg1)
 {
-    Misc::iniWrite("DB", "db_character_set", arg1, &ini);
+    if (!changes_allowed)
+        return;
+    Misc::iniWrite("DB", "db_character_set", arg1, &ini, ini_path);
 }
