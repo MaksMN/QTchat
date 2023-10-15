@@ -3,6 +3,7 @@
 #include <QVBoxLayout>
 #include "../ServerSettings/serversettings.h"
 #include "./ui_mainwindow.h"
+#include "console.h"
 #include "user.h"
 #include "userwidget.h"
 
@@ -11,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    Console::setConsole(ui->console);
 
     UserWidget *userwidget = new UserWidget();
     chat::User user(1, "login", "name", "family", chat::user::common);
