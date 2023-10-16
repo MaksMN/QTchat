@@ -17,8 +17,8 @@ void UserWidget::setUser(chat::User *user)
 {
     _user = user;
     _userID = user->id();
-    ui->labelUserLogin->setText(user->login().data());
-    ui->labelUserName->setText(user->FullName().data());
+    ui->labelUserLogin->setText(user->login());
+    ui->labelUserName->setText(user->FullName());
 }
 
 ullong UserWidget::userID()

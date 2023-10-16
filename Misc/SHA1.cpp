@@ -48,6 +48,16 @@ std::string SHA1::hash(std::string &&inStr)
     return hash(inStr.data(), (uint) inStr.size());
 }
 
+QString SHA1::hash(QString &inStr)
+{
+    return QString::fromStdString(hash(inStr.toStdString()));
+}
+
+QString SHA1::hash(QString &&inStr)
+{
+    return QString::fromStdString(hash(inStr.toStdString()));
+}
+
 std::string SHA1::hash(char message[], uint msize_bytes)
 {
     // инициализация

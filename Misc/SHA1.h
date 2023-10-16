@@ -1,4 +1,5 @@
 #pragma once
+#include <QString>
 #include <cstring>
 #include <iomanip>
 #include <sstream>
@@ -16,5 +17,7 @@ public:
     ~SHA1() = default;
     std::string hash(std::string &inStr);
     std::string hash(std::string &&inStr);
+    QString hash(QString &inStr);
+    QString hash(QString &&inStr);
     std::string hash(char message[], uint msize_bytes);
 };
