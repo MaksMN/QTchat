@@ -1,38 +1,110 @@
 #include "db.h"
 #include "SimpleIni.h"
-#include "console.h"
 #include "misc.h"
 #include "strings.h"
-DB::DB() {}
 
-bool DB::dbExec(const QString &str_query, QSqlQuery &query)
+DB::DB(APP *_app)
+    : app(_app)
+{}
+
+DB::~DB() {}
+
+bool DB::dbExec(QSqlQuery &query)
 {
-    bool qresult = query.exec(str_query);
+    bool qresult = query.exec();
     if (!qresult) {
-        setDBErrorCode(query.lastError().nativeErrorCode());
-        setDBErrorMsg(query.lastError().text());
+        printQueryError(query);
     }
     return qresult;
 }
 
 std::shared_ptr<chat::User> DB::getUserByLogin(const QString &login)
 {
-    QString query_str = "SELECT * FROM users WHERE login='" + login + "';";
-    QSqlQuery query;
-    if (!query.exec(query_str)) {
+    QSqlQuery query(db);
+
+    bool qp = query.prepare("SELECT * FROM users WHERE login = :login");
+    if (qp) {
+        query.bindValue(":login", login);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare(\"SELECT * FROM users WHERE login = :login\");");
+        app->ConsoleWrite("❌ :login = " + login);
+        return nullptr;
     }
 
-    return nullptr;
+    if (!dbExec(query))
+        return nullptr;
+    if (query.numRowsAffected() > 0) {
+        query.next();
+        return getUser(query);
+    }
+
+    return std::shared_ptr<chat::User>();
 }
 
-std::shared_ptr<chat::User> DB::getUserByID(ullong &id)
+std::shared_ptr<chat::User> DB::getUserByID(qulonglong &id)
 {
-    return nullptr;
+    QSqlQuery query(db);
+
+    bool qp = query.prepare("SELECT * FROM users WHERE id = :id");
+    if (qp) {
+        query.bindValue(":id", id);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare(\"SELECT * FROM users WHERE login = :login\");");
+        app->ConsoleWrite("❌ :id = " + QString::number(id));
+        return nullptr;
+    }
+
+    if (!dbExec(query))
+        return nullptr;
+    if (query.numRowsAffected() > 0) {
+        query.next();
+        return getUser(query);
+    }
+
+    return std::shared_ptr<chat::User>();
 }
 
-QVector<std::shared_ptr<chat::User> > DB::getUsers(const QString &where, uint limit1, uint limit2)
+std::shared_ptr<chat::User> DB::getUserByID(qulonglong &&id)
 {
-    return QVector<std::shared_ptr<chat::User> >();
+    return getUserByID(id);
+}
+
+QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword, uint offset, uint limit)
+{
+    //SELECT * FROM users WHERE first_name = 'aaa' offset 0 limit 100;
+    QString query_str = "SELECT * FROM users";
+    if (!keyword.isEmpty())
+        query_str += " WHERE "
+                     "login ILIKE :pattern OR "
+                     "first_name ILIKE :pattern OR "
+                     "last_name ILIKE :pattern";
+    if (offset > 0)
+        query_str += " OFFSET :offset" + QString::number(offset);
+
+    query_str += " LIMIT :limit";
+
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":pattern", "%" + keyword + "%");
+        query.bindValue(":offset", offset);
+        query.bindValue(":limit", limit);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return QVector<std::shared_ptr<chat::User>>();
+    }
+    app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return QVector<std::shared_ptr<chat::User>>();
+    auto users = QVector<std::shared_ptr<chat::User>>();
+    if (query.numRowsAffected() > 0) {
+        while (query.next()) {
+            auto user = getUser(query);
+            users.push_back(user);
+        }
+    }
+    return users;
 }
 
 bool DB::saveUser(std::shared_ptr<chat::User>)
@@ -40,48 +112,28 @@ bool DB::saveUser(std::shared_ptr<chat::User>)
     return bool();
 }
 
-QString DB::getDBErrorMsg() const
+void DB::printDBError()
 {
-    return db_error_message;
+    app->ConsoleWrite("❌ " + Strings::t(Strings::DATABASE_ERROR));
+    app->ConsoleWrite("Error code: " + db.lastError().nativeErrorCode());
+    app->ConsoleWrite("Error message: " + db.lastError().text());
 }
 
-void DB::setDBErrorMsg(const QString &newDBErrorMsg)
+void DB::printQueryError(const QSqlQuery &query)
 {
-    db_error_message = newDBErrorMsg;
+    app->ConsoleWrite("❌ " + Strings::t(Strings::DATABASE_QUERY_ERROR));
+    app->ConsoleWrite("Error code: " + query.lastError().nativeErrorCode());
+    app->ConsoleWrite("Error message: " + query.lastError().text());
+    app->ConsoleWrite("Query string: " + query.lastQuery());
 }
 
-QString DB::getDBErrorCode() const
-{
-    return db_error_code;
-}
-
-void DB::setDBErrorCode(const QString &newDBErrorCode)
-{
-    db_error_code = newDBErrorCode;
-}
-
-void DB::errorsClear()
-{
-    db_error_code = QString();
-    db_error_message = QString();
-}
-
-void DB::printError(const QString &query_str)
-{
-    Console::writeLine("❌ " + Strings::t(Strings::DATABASE_ERROR));
-    Console::writeLine("Error code: " + db.lastError().nativeErrorCode());
-    Console::writeLine("Error message: " + db.lastError().text());
-    if (!query_str.isEmpty()) {
-        Console::writeLine("Query string: " + query_str);
-    }
-}
-
-void DB::initialise()
+void DB::initialize()
 {
     CSimpleIniA ini; // https://github.com/brofield/simpleini/tree/master
     SI_Error rc = ini.LoadFile("server.ini");
     if (rc < 0) {
-        Misc::msgBox(Strings::SERVER_INI_NOTFOUND, Strings::DB_USE_DEFAULT_SETTINGS);
+        app->ConsoleWrite(Strings::t(Strings::SERVER_INI_NOTFOUND));
+        app->ConsoleWrite(Strings::t(Strings::DB_USE_DEFAULT_SETTINGS));
     } else {
         server = ini.GetValue("DB", "server", "127.0.0.1");
         port = ini.GetValue("DB", "port", "5432");
@@ -89,34 +141,22 @@ void DB::initialise()
         dbpass = ini.GetValue("DB", "dbpass", "qt_chat");
         dbname = ini.GetValue("DB", "dbname", "qt_chat");
         odbc_driver = ini.GetValue("DB", "odbc_driver", "PostgreSQL ANSI");
-        db_character_set = ini.GetValue("DB", "odbc_driver", "UTF8");
+        db_character_set = ini.GetValue("DB", "db_character_set", "UTF8");
     }
 
-    QString connectString = QString::fromStdString("DRIVER=" + odbc_driver
-                                                   + ";"
-                                                     "SERVERNODE="
-                                                   + server + ":" + port
-                                                   + ";"
-                                                     "UID=qt_chat"
-                                                   + dbuser
-                                                   + ";"
-                                                     "PWD="
-                                                   + dbpass
-                                                   + ";"
-                                                     "DATABASE="
-                                                   + dbname
-                                                   + ";"
-                                                     "SCROLLABLERESULT=true");
+    QString connectString = "DRIVER=" + odbc_driver + ";CHARSET=" + db_character_set
+                            + ";SERVER=" + server + ";PORT=" + port + ";UID=" + dbuser
+                            + ";PWD=" + dbpass + ";DATABASE=" + dbname + ";SCROLLABLERESULT=true";
     db.setDatabaseName(connectString);
 
-    Console::writeLine(Strings::t(Strings::CONNECTING_TO_THE_DATABASE_SERVER));
-    dbClose();
+    app->ConsoleWrite((Strings::t(Strings::CONNECTING_TO_THE_DATABASE_SERVER)));
+
     if (db.open()) {
-        Console::writeLine("✅ " + Strings::t(Strings::CONNECTION_TO_THE_DATABASE_WAS_SUCCESSFUL));
+        app->ConsoleWrite(("✅ " + Strings::t(Strings::CONNECTION_TO_THE_DATABASE_WAS_SUCCESSFUL)));
     } else {
-        Console::writeLine("❌ " + Strings::t(Strings::FAILED_CONNECTION_TO_THE_DATABASE));
-        Console::writeLine("Error code: " + db.lastError().nativeErrorCode());
-        Console::writeLine("Error message: " + db.lastError().text());
+        app->ConsoleWrite(("❌ " + Strings::t(Strings::FAILED_CONNECTION_TO_THE_DATABASE)));
+        app->ConsoleWrite(("Error code: " + db.lastError().nativeErrorCode()));
+        app->ConsoleWrite(("Error message: " + db.lastError().text()));
     }
 }
 
@@ -124,4 +164,24 @@ void DB::dbClose()
 {
     if (db.isOpen())
         db.close();
+}
+
+std::shared_ptr<chat::User> DB::getUser(const QSqlQuery &query)
+{
+    bool init = true;
+    qulonglong id = query.value("id").toULongLong();
+    QString login = query.value("login").toString();
+    QString email = query.value("email").toString();
+    QString first_name = query.value("first_name").toString();
+    QString last_name = query.value("last_name").toString();
+    qulonglong registered = query.value("registered").toULongLong();
+    chat::user::status status = (chat::user::status) query.value("status").toUInt();
+    qulonglong session_key = query.value("session_key").toULongLong();
+    QString hash = query.value("hash").toString();
+    QString salt = query.value("salt").toString();
+
+    auto user = std::make_shared<chat::User>(
+        init, id, login, email, first_name, last_name, registered, status, session_key, hash, salt);
+
+    return user;
 }

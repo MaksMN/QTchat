@@ -1,11 +1,13 @@
 #ifndef DB_H
 #define DB_H
 
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QObject>
 #include <QtSql>
+#include "app.h"
 #include "user.h"
-
+#include <memory>
 typedef unsigned int uint;
 typedef unsigned long long ullong;
 
@@ -13,39 +15,37 @@ class DB
 {
 private:
     QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
-    QString db_error_message;
-    QString db_error_code;
 
-    std::string server = "127.0.0.1";
-    std::string port = "5432";
-    std::string dbuser = "qt_chat";
-    std::string dbpass = "qt_chat";
-    std::string dbname = "qt_chat";
-    std::string odbc_driver = "PostgreSQL ANSI";
-    std::string db_character_set = "UTF8";
-    uint db_errno = 0;
+    QString server = "127.0.0.1";
+    QString port = "5432";
+    QString dbuser = "qt_chat";
+    QString dbpass = "qt_chat";
+    QString dbname = "qt_chat";
+    QString odbc_driver = "PostgreSQL ANSI";
+    QString db_character_set = "utf8";
+    APP *app;
 
 public:
-    DB();
-    ~DB() = default;
+    explicit DB(APP *app = nullptr);
+    ~DB();
 
-    bool dbExec(const QString &str_query, QSqlQuery &query);
+    bool dbExec(QSqlQuery &query);
 
     std::shared_ptr<chat::User> getUserByLogin(const QString &login);
-    std::shared_ptr<chat::User> getUserByID(ullong &id);
-    QVector<std::shared_ptr<chat::User>> getUsers(const QString &where,
-                                                  uint limit1,
-                                                  uint limit2 = 0);
+    std::shared_ptr<chat::User> getUserByID(qulonglong &id);
+    std::shared_ptr<chat::User> getUserByID(qulonglong &&id);
+    QVector<std::shared_ptr<chat::User>> getUsers(const QString &keyword = QString(),
+                                                  uint offset = 0,
+                                                  uint limit = 100);
     bool saveUser(std::shared_ptr<chat::User>);
 
-    QString getDBErrorMsg() const;
-    void setDBErrorMsg(const QString &newDBErrorMsg);
-    QString getDBErrorCode() const;
-    void setDBErrorCode(const QString &newDBErrorCode);
-    void errorsClear();
-    void printError(const QString &query_str = QString());
-    void initialise();
+    void printDBError();
+    void printQueryError(const QSqlQuery &query);
+    void initialize();
     void dbClose();
+
+private:
+    std::shared_ptr<chat::User> getUser(const QSqlQuery &query);
 };
 
 #endif // DB_H
