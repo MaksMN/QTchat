@@ -25,11 +25,6 @@ add_library(ChatStructs SHARED
     ../Misc/flags.h
     ../Misc/misc.h ../Misc/misc.cpp
     userwidget.h userwidget.cpp userwidget.ui
-
-
-
-
-
 )
 
 target_link_libraries(ChatStructs PRIVATE Qt${QT_VERSION_MAJOR}::Core
@@ -66,6 +61,6 @@ foreach(header_file ${HEADER_FILES})
 endforeach()
 ##############################################################################################
 
-###### Misc ######
-include_directories(../Misc)
+##################
+include_directories(../Misc ../Server/Strings)
 ##################
