@@ -1,21 +1,21 @@
 #include "mainwindow.h"
 #include <QLabel>
 #include <QVBoxLayout>
-#include "../ServerSettings/serversettings.h"
 #include "./ui_mainwindow.h"
-#include "console.h"
+#include "serversettings.h"
 #include "user.h"
 #include "userwidget.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
-    Console::setConsole(ui->console);
+    console.setConsole(ui->console);
 
     UserWidget *userwidget = new UserWidget();
-    chat::User user(1, "login", "name", "family", chat::user::common);
+    chat::User user(1, "login", "name", "family", 0, chat::user::common);
 
     userwidget->setUser(&user);
 
@@ -28,6 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::consoleWrite(QString line)
+{
+    QMutexLocker locker(&mutex);
+    console.writeLine(line);
 }
 
 void MainWindow::on_actionShut_Down_triggered()

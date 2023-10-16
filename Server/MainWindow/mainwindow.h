@@ -3,7 +3,9 @@
 #include <QEvent>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMutex>
 #include <QTranslator>
+#include "console.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,15 +20,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+public slots:
+    void consoleWrite(QString line);
 private slots:
     void on_actionShut_Down_triggered();
-
     void on_actionServer_Settings_triggered();
 
 private:
     QString s = "test;";
     QString *s2 = &s;
     Ui::MainWindow *ui;
+
+    Console console{nullptr};
+    QMutex mutex;
 };
 #endif // MAINWINDOW_H
