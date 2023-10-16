@@ -36,7 +36,7 @@ public:
 
 template<typename T, typename N>
 inline CircularQueue<T, N>::CircularQueue(N max_size)
-    : _max_size(size)
+    : _max_size(max_size)
 {}
 
 template <typename T, typename N>
@@ -104,7 +104,7 @@ inline N CircularQueue<T, N>::max_size()
 template<typename T, typename N>
 inline N CircularQueue<T, N>::size()
 {
-    return _deque.size();
+    return (N) _deque.size();
 }
 
 template<typename T, typename N>
