@@ -2,10 +2,6 @@
 #define MISC_H
 #include <QObject>
 #include "SimpleIni.h"
-#include <cstdlib>
-#include <cstring>
-#include <map>
-#include <time.h>
 
 typedef unsigned int uint;
 typedef unsigned long long ullong;
@@ -19,16 +15,16 @@ public:
 
     static void msgBox(QString text, QString infText);
 
-    static void iniWrite(const QString &&section,
-                         const QString &&parameter,
+    static bool iniWrite(const QString &section,
+                         const QString &parameter,
                          const QString &value,
                          CSimpleIniA *ini,
-                         std::string path);
-    static void iniWrite(const QString &section,
+                         const QString &path);
+    static bool iniWrite(const QString &section,
                          const QString &parameter,
                          int value,
                          CSimpleIniA *ini,
-                         std::string path);
+                         const QString &path);
 };
 
 #endif // MISC_H
