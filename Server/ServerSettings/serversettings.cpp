@@ -12,9 +12,16 @@ ServerSettings::ServerSettings(QWidget *parent) :
     ui->setupUi(this);
 
     changes_allowed = false;
-    SI_Error rc = ini.LoadFile(ini_path.data());
+    SI_Error rc = ini.LoadFile(ini_path.toStdString().data());
     if (rc < 0) {
-        Misc::msgBox(Strings::SERVER_INI_NOTFOUND, Strings::SETTINGS_CANNOT_BE_SAVED);
+        QMetaObject::invokeMethod(parent,
+                                  "consoleWrite",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QString,
+                                        "🔴 " + Strings::t(Strings::SERVER_INI_NOTFOUND)
+                                            + "\n"
+                                              "🔴 "
+                                            + Strings::t(Strings::SETTINGS_CANNOT_BE_SAVED)));
     } else {
         ui->sv_address->setText(ini.GetValue("GENERAL", "sv_address", "127.0.0.1"));
         ui->sv_port->setValue(ini.GetLongValue("GENERAL", "sv_address", 7777));
@@ -25,7 +32,7 @@ ServerSettings::ServerSettings(QWidget *parent) :
         ui->db_pass->setText(ini.GetValue("DB", "dbpass", "qt_chat"));
         ui->db_name->setText(ini.GetValue("DB", "dbname", "qt_chat"));
         ui->db_odbc_driver->setText(ini.GetValue("DB", "odbc_driver", "PostgreSQL ANSI"));
-        ui->db_charset->setText(ini.GetValue("DB", "db_character_set", "UTF8"));
+        ui->db_charset->setText(ini.GetValue("DB", "db_character_set", "utf8"));
     }
     changes_allowed = true;
 }

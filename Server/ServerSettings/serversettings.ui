@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>261</width>
-    <height>344</height>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -195,14 +195,14 @@
           <item>
            <widget class="QLineEdit" name="db_odbc_driver">
             <property name="text">
-             <string notr="true">PostgreSQL ANSI</string>
+             <string notr="true">PostgreSQL Unicode</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="db_charset">
             <property name="text">
-             <string notr="true">UTF8</string>
+             <string notr="true">utf8</string>
             </property>
            </widget>
           </item>

@@ -39,7 +39,7 @@ private slots:
 
 private:
     bool changes_allowed = false;
-    std::string ini_path = "server.ini";
+    QString ini_path = "server.ini";
     Ui::ServerSettings *ui;
 };
 
