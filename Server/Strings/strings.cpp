@@ -1,6 +1,7 @@
 #include "strings.h"
 
 /*Strings*/
+const QString Strings::DATABASE_QUERY_ERROR = QObject::tr("Database query error");
 const QString Strings::DATABASE_ERROR = QObject::tr("Database error");
 const QString Strings::FAILED_CONNECTION_TO_THE_DATABASE = QObject::tr("Failed connection to the database");
 const QString Strings::CONNECTION_TO_THE_DATABASE_WAS_SUCCESSFUL = QObject::tr("Connection to the database was successful");
