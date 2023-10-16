@@ -4,11 +4,11 @@
 #include "ChatStructs_global.h"
 #include "SHA1.h"
 #include "flags.h"
-#include "misc.h"
+
 #include <string>
 
 typedef unsigned int uint;
-typedef unsigned long long ullong;
+typedef unsigned long long qulonglong;
 
 namespace chat {
 
@@ -25,16 +25,16 @@ class CHATSTRUCTS_EXPORT User
 {
 private:
     bool _init = false; // признак наличия пользователя в БД
-    ullong _id = 0;
-    std::string _login;
-    std::string _email;
-    std::string _first_name;
-    std::string _last_name;
-    std::string _pass_hash;
-    std::string _pass_salt;
+    qulonglong _id = 0;
+    QString _login;
+    QString _email;
+    QString _first_name;
+    QString _last_name;
+    qulonglong _registered = 0;
     user::status _status = user::status::common;
-    ullong _registered = 0;
-    ullong _session_key = 0;
+    qulonglong _session_key = 0;
+    QString _pass_hash;
+    QString _pass_salt;
 
     Flags<user::status> flags;
     SHA1 sha1;
@@ -45,39 +45,42 @@ public:
     /*!
      * \brief User Конструктор для использования на клиенте. Скрыты секретные данные.
      */
-    User(ullong id,
-         const std::string &login,
-         const std::string &first_name,
-         const std::string &last_name,
+    User(qulonglong id,
+         const QString &login,
+         const QString &first_name,
+         const QString &last_name,
+         qulonglong registered,
          user::status status);
 
     /*!
      * \brief Конструктор создания нового пользователя для добавления в базу данных
      */
-    User(const std::string &login,
-         const std::string &email,
-         const std::string &first_name,
-         const std::string &last_name,
-         const std::string &pass_hash,
-         const std::string &pass_salt,
-         ullong registered,
-         ullong session_key);
+    User(const QString &login,
+         const QString &email,
+         const QString &first_name,
+         const QString &last_name,
+         qulonglong registered,
+         user::status status,
+         qulonglong session_key,
+         const QString &pass_hash,
+         const QString &pass_salt);
 
     /*!
      * \brief Конструктор для получения пользователя из базы данных
      */
     User(bool init,
-         ullong id,
-         const std::string &login,
-         const std::string &email,
-         const std::string &first_name,
-         const std::string &last_name,
-         const std::string &pass_hash,
-         const std::string &pass_salt,
-         ullong registered,
-         ullong session_key);
+         qulonglong id,
+         const QString &login,
+         const QString &email,
+         const QString &first_name,
+         const QString &last_name,
+         qulonglong registered,
+         user::status status,
+         qulonglong session_key,
+         const QString &pass_hash,
+         const QString &pass_salt);
 
-    ullong id();
+    qulonglong id();
 
     /*!
      * \brief Пользователь есть в базе данных
@@ -85,44 +88,44 @@ public:
      */
     bool init();
 
-    std::string login();
-    void setLogin(const std::string &login);
+    QString login();
+    void setLogin(const QString &login);
 
-    std::string email();
-    void setEmail(const std::string &email);
+    QString email();
+    void setEmail(const QString &email);
 
-    std::string first_name();
-    void setFirstName(const std::string &first_name);
+    QString first_name();
+    void setFirstName(const QString &first_name);
 
-    std::string last_name();
-    void setLastName(const std::string &last_name);
+    QString last_name();
+    void setLastName(const QString &last_name);
 
     /*!
      * \brief Получить имя и фамилию.
      * \return
      */
-    std::string FullName();
+    QString FullName();
 
     /*!
      * \brief создает новые соль и хеш пароля. 
      * Внимание! Пароль по ссылке уничтожается, его нельзя использовать повторно.
      */
-    void setPass(std::string &pass);
+    void setPass(QString &pass);
 
     /*!
      * \brief Проверяет пароль.
      * Внимание! Пароль по ссылке уничтожается, его нельзя использовать повторно.
      */
-    bool validatePass(std::string &pass);
+    bool validatePass(QString &pass);
 
     user::status status();
     void setStatus(user::status status);
 
-    ullong registered();
+    qulonglong registered();
 
-    ullong session_key();
-    void setSessionKey(const ullong &session_key);
-    bool validateSessionKey(const ullong &session_key);
+    qulonglong session_key();
+    void setSessionKey(const qulonglong &session_key);
+    bool validateSessionKey(const qulonglong &session_key);
 
     void ban();
     void unban();

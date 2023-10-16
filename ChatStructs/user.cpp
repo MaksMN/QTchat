@@ -1,8 +1,8 @@
 #include "user.h"
-
+#include "misc.h"
 chat::User::User() {}
 
-ullong chat::User::id()
+qulonglong chat::User::id()
 {
     return _id;
 }
@@ -12,55 +12,55 @@ bool chat::User::init()
     return _init;
 }
 
-std::string chat::User::login()
+QString chat::User::login()
 {
     return _login;
 }
 
-void chat::User::setLogin(const std::string &login)
+void chat::User::setLogin(const QString &login)
 {
     _login = login;
 }
 
-std::string chat::User::email()
+QString chat::User::email()
 {
     return _email;
 }
 
-void chat::User::setEmail(const std::string &email)
+void chat::User::setEmail(const QString &email)
 {
     _email = email;
 }
 
-std::string chat::User::first_name()
+QString chat::User::first_name()
 {
     return _first_name;
 }
 
-void chat::User::setFirstName(const std::string &first_name)
+void chat::User::setFirstName(const QString &first_name)
 {
     _first_name = first_name;
 }
 
-std::string chat::User::last_name()
+QString chat::User::last_name()
 {
     return _last_name;
 }
 
-void chat::User::setLastName(const std::string &last_name)
+void chat::User::setLastName(const QString &last_name)
 {
     _last_name = last_name;
 }
 
-std::string chat::User::FullName()
+QString chat::User::FullName()
 {
-    auto name = _last_name.empty() ? _first_name : _first_name + " " + _last_name;
+    auto name = _last_name.isEmpty() ? _first_name : _first_name + " " + _last_name;
     return name;
 }
 
-void chat::User::setPass(std::string &pass)
+void chat::User::setPass(QString &pass)
 {
-    _pass_salt = sha1.hash(std::to_string(Misc::randomKey()));
+    _pass_salt = sha1.hash(QString::number(Misc::randomKey()));
     _pass_hash = sha1.hash(pass + _pass_salt);
     // уничтожение пароля
     for (int i = 0; i < pass.size(); ++i) {
@@ -68,11 +68,11 @@ void chat::User::setPass(std::string &pass)
     }
 }
 
-bool chat::User::validatePass(std::string &pass)
+bool chat::User::validatePass(QString &pass)
 {
-    if (_pass_hash.empty())
+    if (_pass_hash.isEmpty())
         return false;
-    std::string pass_hash = sha1.hash(pass + _pass_salt);
+    QString pass_hash = sha1.hash(pass + _pass_salt);
     // уничтожение пароля
     for (int i{0}; i < pass.size(); i++)
         pass.data()[i] = '\0';
@@ -89,22 +89,22 @@ void chat::User::setStatus(user::status status)
     _status = status;
 }
 
-ullong chat::User::registered()
+qulonglong chat::User::registered()
 {
     return _registered;
 }
 
-ullong chat::User::session_key()
+qulonglong chat::User::session_key()
 {
     return _session_key;
 }
 
-void chat::User::setSessionKey(const ullong &session_key)
+void chat::User::setSessionKey(const qulonglong &session_key)
 {
     _session_key = session_key;
 }
 
-bool chat::User::validateSessionKey(const ullong &session_key)
+bool chat::User::validateSessionKey(const qulonglong &session_key)
 {
     if (_session_key == 0)
         return false;
@@ -163,56 +163,62 @@ QString chat::User::getGroup()
 }
 
 namespace chat {
-User::User(const std::string &login,
-           const std::string &email,
-           const std::string &first_name,
-           const std::string &last_name,
-           const std::string &pass_hash,
-           const std::string &pass_salt,
-           ullong registered,
-           ullong session_key)
+User::User(const QString &login,
+           const QString &email,
+           const QString &first_name,
+           const QString &last_name,
+           qulonglong registered,
+           user::status status,
+           qulonglong session_key,
+           const QString &pass_hash,
+           const QString &pass_salt)
     : _login(login)
     , _email(email)
     , _first_name(first_name)
     , _last_name(last_name)
+    , _registered(std::move(registered))
+    , _status(status)
+    , _session_key(std::move(session_key))
     , _pass_hash(pass_hash)
     , _pass_salt(pass_salt)
+{}
+
+User::User(qulonglong id,
+           const QString &login,
+           const QString &first_name,
+           const QString &last_name,
+           qulonglong registered,
+           user::status status)
+    : _id(std::move(id))
+    , _login(login)
+    , _first_name(first_name)
+    , _last_name(last_name)
     , _registered(std::move(registered))
-    , _session_key(std::move(session_key))
+    , _status(status)
 {}
 
 User::User(bool init,
-           ullong id,
-           const std::string &login,
-           const std::string &email,
-           const std::string &first_name,
-           const std::string &last_name,
-           const std::string &pass_hash,
-           const std::string &pass_salt,
-           ullong registered,
-           ullong session_key)
+           qulonglong id,
+           const QString &login,
+           const QString &email,
+           const QString &first_name,
+           const QString &last_name,
+           qulonglong registered,
+           user::status status,
+           qulonglong session_key,
+           const QString &pass_hash,
+           const QString &pass_salt)
     : _init(init)
     , _id(std::move(id))
     , _login(login)
     , _email(email)
     , _first_name(first_name)
     , _last_name(last_name)
+    , _registered(std::move(registered))
+    , _status(status)
+    , _session_key(std::move(session_key))
     , _pass_hash(pass_hash)
     , _pass_salt(pass_salt)
-    , _registered(std::move(registered))
-    , _session_key(std::move(session_key))
-{}
-
-User::User(ullong id,
-           const std::string &login,
-           const std::string &first_name,
-           const std::string &last_name,
-           user::status status)
-    : _id(std::move(id))
-    , _login(login)
-    , _first_name(first_name)
-    , _last_name(last_name)
-    , _status(status)
 {}
 
 } // namespace chat
