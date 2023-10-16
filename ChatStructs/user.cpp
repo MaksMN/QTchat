@@ -163,6 +163,17 @@ QString chat::User::getGroup()
 }
 
 namespace chat {
+
+QString User::pass_hash() const
+{
+    return _pass_hash;
+}
+
+QString User::pass_salt() const
+{
+    return _pass_salt;
+}
+
 User::User(const QString &login,
            const QString &email,
            const QString &first_name,

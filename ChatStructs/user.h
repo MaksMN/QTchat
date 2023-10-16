@@ -137,6 +137,8 @@ public:
     void toUser();
 
     QString getGroup();
+    QString pass_hash() const;
+    QString pass_salt() const;
 };
 } // namespace chat
 #endif // USER_H

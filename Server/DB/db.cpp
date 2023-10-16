@@ -107,9 +107,69 @@ QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword, uint o
     return users;
 }
 
-bool DB::saveUser(std::shared_ptr<chat::User>)
+bool DB::createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy)
 {
-    return bool();
+    login_busy = count("users", "login", user->login()) > 0;
+    email_busy = count("users", "email", user->email()) > 0;
+    if (login_busy || email_busy)
+        return false;
+    QString query_str
+        = "INSERT INTO users "
+          "(login, email, first_name, last_name, registered, status, session_key, hash,salt) "
+          "VALUES "
+          "(:login, :email, :first_name, :last_name, :registered, :status, :session, :hash, :salt)";
+    QSqlQuery query(db);
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":login", user->login());
+        query.bindValue(":email", user->email());
+        query.bindValue(":first_name", user->first_name());
+        query.bindValue(":last_name", user->last_name());
+        query.bindValue(":registered", user->registered());
+        query.bindValue(":status", user->status());
+        query.bindValue(":session", user->session_key());
+        query.bindValue(":hash", user->pass_hash());
+        query.bindValue(":salt", user->pass_salt());
+
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    return dbExec(query);
+}
+
+qulonglong DB::count(const QString &table, const QString &column, QVariant value, bool t)
+{
+    QString query_str = "SELECT COUNT(*) FROM " + table;
+    if (value != NULL) {
+        if (!column.isEmpty())
+            query_str += " WHERE " + column;
+
+        if (value.userType() == QMetaType::UInt || value.userType() == QMetaType::ULongLong
+            || value.userType() == QMetaType::Int)
+            query_str += " = :value";
+
+        if (value.userType() == QMetaType::QString) {
+            if (t)
+                value = "%" + value.toString() + "%";
+            query_str += " LIKE :value";
+        }
+    }
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":value", value);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return 0;
+
+    query.next();
+    return query.value(0).toULongLong();
 }
 
 void DB::printDBError()

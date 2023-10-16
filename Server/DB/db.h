@@ -37,7 +37,12 @@ public:
     QVector<std::shared_ptr<chat::User>> getUsers(const QString &keyword = QString(),
                                                   uint offset = 0,
                                                   uint limit = 100);
-    bool saveUser(std::shared_ptr<chat::User>);
+    bool createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy);
+
+    qulonglong count(const QString &table,
+                     const QString &column = QString(),
+                     QVariant value = NULL,
+                     bool t = false);
 
     void printDBError();
     void printQueryError(const QSqlQuery &query);
