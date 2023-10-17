@@ -2,7 +2,7 @@
 #include "misc.h"
 chat::User::User() {}
 
-qulonglong chat::User::id()
+qlonglong chat::User::id()
 {
     return _id;
 }
@@ -89,22 +89,22 @@ void chat::User::setStatus(user::status status)
     _status = status;
 }
 
-qulonglong chat::User::registered()
+qlonglong chat::User::registered()
 {
     return _registered;
 }
 
-qulonglong chat::User::session_key()
+qlonglong chat::User::session_key()
 {
     return _session_key;
 }
 
-void chat::User::setSessionKey(const qulonglong &session_key)
+void chat::User::setSessionKey(const qlonglong &session_key)
 {
     _session_key = session_key;
 }
 
-bool chat::User::validateSessionKey(const qulonglong &session_key)
+bool chat::User::validateSessionKey(const qlonglong &session_key)
 {
     if (_session_key == 0)
         return false;
@@ -178,9 +178,9 @@ User::User(const QString &login,
            const QString &email,
            const QString &first_name,
            const QString &last_name,
-           qulonglong registered,
+           qlonglong registered,
            user::status status,
-           qulonglong session_key,
+           qlonglong session_key,
            const QString &pass_hash,
            const QString &pass_salt)
     : _login(login)
@@ -194,11 +194,11 @@ User::User(const QString &login,
     , _pass_salt(pass_salt)
 {}
 
-User::User(qulonglong id,
+User::User(qlonglong id,
            const QString &login,
            const QString &first_name,
            const QString &last_name,
-           qulonglong registered,
+           qlonglong registered,
            user::status status)
     : _id(std::move(id))
     , _login(login)
@@ -209,14 +209,14 @@ User::User(qulonglong id,
 {}
 
 User::User(bool init,
-           qulonglong id,
+           qlonglong id,
            const QString &login,
            const QString &email,
            const QString &first_name,
            const QString &last_name,
-           qulonglong registered,
+           qlonglong registered,
            user::status status,
-           qulonglong session_key,
+           qlonglong session_key,
            const QString &pass_hash,
            const QString &pass_salt)
     : _init(init)

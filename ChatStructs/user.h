@@ -7,9 +7,6 @@
 
 #include <string>
 
-typedef unsigned int uint;
-typedef unsigned long long qulonglong;
-
 namespace chat {
 
 namespace user{
@@ -25,14 +22,14 @@ class CHATSTRUCTS_EXPORT User
 {
 private:
     bool _init = false; // признак наличия пользователя в БД
-    qulonglong _id = 0;
+    qlonglong _id = 0;
     QString _login;
     QString _email;
     QString _first_name;
     QString _last_name;
-    qulonglong _registered = 0;
+    qlonglong _registered = 0;
     user::status _status = user::status::common;
-    qulonglong _session_key = 0;
+    qlonglong _session_key = 0;
     QString _pass_hash;
     QString _pass_salt;
 
@@ -45,11 +42,11 @@ public:
     /*!
      * \brief User Конструктор для использования на клиенте. Скрыты секретные данные.
      */
-    User(qulonglong id,
+    User(qlonglong id,
          const QString &login,
          const QString &first_name,
          const QString &last_name,
-         qulonglong registered,
+         qlonglong registered,
          user::status status);
 
     /*!
@@ -59,9 +56,9 @@ public:
          const QString &email,
          const QString &first_name,
          const QString &last_name,
-         qulonglong registered,
+         qlonglong registered,
          user::status status,
-         qulonglong session_key,
+         qlonglong session_key,
          const QString &pass_hash,
          const QString &pass_salt);
 
@@ -69,18 +66,18 @@ public:
      * \brief Конструктор для получения пользователя из базы данных
      */
     User(bool init,
-         qulonglong id,
+         qlonglong id,
          const QString &login,
          const QString &email,
          const QString &first_name,
          const QString &last_name,
-         qulonglong registered,
+         qlonglong registered,
          user::status status,
-         qulonglong session_key,
+         qlonglong session_key,
          const QString &pass_hash,
          const QString &pass_salt);
 
-    qulonglong id();
+    qlonglong id();
 
     /*!
      * \brief Пользователь есть в базе данных
@@ -121,11 +118,11 @@ public:
     user::status status();
     void setStatus(user::status status);
 
-    qulonglong registered();
+    qlonglong registered();
 
-    qulonglong session_key();
-    void setSessionKey(const qulonglong &session_key);
-    bool validateSessionKey(const qulonglong &session_key);
+    qlonglong session_key();
+    void setSessionKey(const qlonglong &session_key);
+    bool validateSessionKey(const qlonglong &session_key);
 
     void ban();
     void unban();
