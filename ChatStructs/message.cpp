@@ -3,6 +3,27 @@
 chat::Message::Message() {}
 
 namespace chat {
+
+std::shared_ptr<chat::User> Message::recipient() const
+{
+    return _recipient;
+}
+
+void Message::setRecipient(std::shared_ptr<chat::User> newRecipient)
+{
+    _recipient = newRecipient;
+}
+
+std::shared_ptr<chat::User> Message::author() const
+{
+    return _author;
+}
+
+void Message::setAuthor(std::shared_ptr<chat::User> newAuthor)
+{
+    _author = newAuthor;
+}
+
 bool Message::init() const
 {
     return _init;
@@ -13,32 +34,32 @@ void Message::setInit(bool newInit)
     _init = newInit;
 }
 
-ullong Message::id() const
+qlonglong Message::id() const
 {
     return _id;
 }
 
-ullong Message::author_id() const
+qlonglong Message::author_id() const
 {
     return _author_id;
 }
 
-ullong Message::recipient_id() const
+qlonglong Message::recipient_id() const
 {
     return _recipient_id;
 }
 
-std::string Message::text() const
+QString Message::text() const
 {
     return _text;
 }
 
-void Message::setText(const std::string &newText)
+void Message::setText(const QString &newText)
 {
     _text = newText;
 }
 
-ullong Message::published() const
+qlonglong Message::published() const
 {
     return _published;
 }
@@ -93,7 +114,7 @@ void Message::unhide()
     flags.removeFlag(_status, msg::status::hidden);
 }
 
-Message::Message(ullong author_id, const std::string &text, ullong published)
+Message::Message(qlonglong author_id, const QString &text, qlonglong published)
     : _author_id(std::move(author_id))
     , _text(text)
     , _published(std::move(published))
@@ -101,10 +122,10 @@ Message::Message(ullong author_id, const std::string &text, ullong published)
 {}
 
 Message::Message(bool init,
-                 ullong id,
-                 ullong author_id,
-                 const std::string &text,
-                 ullong published,
+                 qlonglong id,
+                 qlonglong author_id,
+                 const QString &text,
+                 qlonglong published,
                  msg::status status)
     : _init(init)
     , _id(std::move(id))
@@ -114,7 +135,10 @@ Message::Message(bool init,
     , _status(status)
 {}
 
-Message::Message(ullong author_id, ullong recipient_id, const std::string &text, ullong published)
+Message::Message(qlonglong author_id,
+                 qlonglong recipient_id,
+                 const QString &text,
+                 qlonglong published)
     : _author_id(std::move(author_id))
     , _recipient_id(std::move(recipient_id))
     , _text(text)
@@ -123,11 +147,11 @@ Message::Message(ullong author_id, ullong recipient_id, const std::string &text,
 {}
 
 Message::Message(bool init,
-                 ullong id,
-                 ullong author_id,
-                 ullong recipient_id,
-                 const std::string &text,
-                 ullong published,
+                 qlonglong id,
+                 qlonglong author_id,
+                 qlonglong recipient_id,
+                 const QString &text,
+                 qlonglong published,
                  msg::status status)
     : _init(init)
     , _id(std::move(id))

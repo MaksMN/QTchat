@@ -3,9 +3,7 @@
 #include <QObject>
 #include "ChatStructs_global.h"
 #include "flags.h"
-
-typedef unsigned int uint;
-typedef unsigned long long ullong;
+#include "user.h"
 
 namespace chat {
 namespace msg {
@@ -25,11 +23,13 @@ class CHATSTRUCTS_EXPORT Message
 {
 private:
     bool _init = false;
-    ullong _id;
-    ullong _author_id;
-    ullong _recipient_id;
-    std::string _text;
-    ullong _published;
+    qlonglong _id;
+    qlonglong _author_id;
+    std::shared_ptr<chat::User> _author = nullptr;
+    qlonglong _recipient_id;
+    std::shared_ptr<chat::User> _recipient = nullptr;
+    QString _text;
+    qlonglong _published;
     msg::status _status;
     Flags<msg::status> flags;
 
@@ -39,40 +39,40 @@ public:
     /*!
      * \brief Создает публичное сообщение для добавления в базу данных
      */
-    Message(ullong author_id, const std::string &text, ullong published);
+    Message(qlonglong author_id, const QString &text, qlonglong published);
     /*!
      * \brief Создает публичное сообщение из базы данных
      */
     Message(bool init,
-            ullong id,
-            ullong author_id,
-            const std::string &text,
-            ullong published,
+            qlonglong id,
+            qlonglong author_id,
+            const QString &text,
+            qlonglong published,
             msg::status status);
 
     /*!
      * \brief Создает приватное сообщение для добавления в базу данных
      */
-    Message(ullong author_id, ullong recipient_id, const std::string &text, ullong published);
+    Message(qlonglong author_id, qlonglong recipient_id, const QString &text, qlonglong published);
     /*!
      * \brief Создает приватное сообщение из базы данных.
      */
     Message(bool init,
-            ullong id,
-            ullong author_id,
-            ullong recipient_id,
-            const std::string &text,
-            ullong published,
+            qlonglong id,
+            qlonglong author_id,
+            qlonglong recipient_id,
+            const QString &text,
+            qlonglong published,
             msg::status status);
 
     bool init() const;
     void setInit(bool newInit);
-    ullong id() const;
-    ullong author_id() const;
-    ullong recipient_id() const;
-    std::string text() const;
-    void setText(const std::string &newText);
-    ullong published() const;
+    qlonglong id() const;
+    qlonglong author_id() const;
+    qlonglong recipient_id() const;
+    QString text() const;
+    void setText(const QString &newText);
+    qlonglong published() const;
     msg::status status() const;
     void setStatus(msg::status newStatus);
 
@@ -84,6 +84,10 @@ public:
     bool isRead();
     void hide();
     void unhide();
+    std::shared_ptr<chat::User> author() const;
+    void setAuthor(std::shared_ptr<chat::User> newAuthor);
+    std::shared_ptr<chat::User> recipient() const;
+    void setRecipient(std::shared_ptr<chat::User> newRecipient);
 };
 } // namespace chat
 #endif // MESSAGE_H

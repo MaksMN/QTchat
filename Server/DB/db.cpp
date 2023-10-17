@@ -41,7 +41,7 @@ std::shared_ptr<chat::User> DB::getUserByLogin(const QString &login)
     return std::shared_ptr<chat::User>();
 }
 
-std::shared_ptr<chat::User> DB::getUserByID(qulonglong &id)
+std::shared_ptr<chat::User> DB::getUserByID(qlonglong &id)
 {
     QSqlQuery query(db);
 
@@ -61,17 +61,18 @@ std::shared_ptr<chat::User> DB::getUserByID(qulonglong &id)
         return getUser(query);
     }
 
-    return std::shared_ptr<chat::User>();
+    return nullptr;
 }
 
-std::shared_ptr<chat::User> DB::getUserByID(qulonglong &&id)
+std::shared_ptr<chat::User> DB::getUserByID(qlonglong &&id)
 {
     return getUserByID(id);
 }
 
-QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword, uint offset, uint limit)
+QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword,
+                                                  quint32 offset,
+                                                  quint32 limit)
 {
-    //SELECT * FROM users WHERE first_name = 'aaa' offset 0 limit 100;
     QString query_str = "SELECT * FROM users";
     if (!keyword.isEmpty())
         query_str += " WHERE "
@@ -135,10 +136,104 @@ bool DB::createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &em
         app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
         return 0;
     }
-    return dbExec(query);
+    bool ex = dbExec(query);
+    if (query.numRowsAffected() < 1) {
+        login_busy = count("users", "login", user->login()) > 0;
+        email_busy = count("users", "email", user->email()) > 0;
+    }
+    return ex;
 }
 
-qulonglong DB::count(const QString &table, const QString &column, QVariant value, bool t)
+bool DB::updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy)
+{
+    login_busy = count("users", "login", user->login()) > 0;
+    email_busy = count("users", "email", user->email()) > 0;
+    if (login_busy || email_busy)
+        return false;
+    QString query_str = "UPDATE users SET "
+                        "login = :login, "
+                        "email = :email, "
+                        "first_name = :first_name, "
+                        "last_name =:last_name, "
+                        "status = :status, "
+                        "session_key = :session_key, "
+                        "hash = :hash, "
+                        "salt = :salt "
+                        "WHERE id = :id;";
+    QSqlQuery query(db);
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":login", user->login());
+        query.bindValue(":email", user->email());
+        query.bindValue(":first_name", user->first_name());
+        query.bindValue(":last_name", user->last_name());
+        query.bindValue(":status", user->status());
+        query.bindValue(":session", user->session_key());
+        query.bindValue(":hash", user->pass_hash());
+        query.bindValue(":salt", user->pass_salt());
+        query.bindValue(":id", user->id());
+
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    bool ex = dbExec(query);
+    if (query.numRowsAffected() < 1) {
+        login_busy = count("users", "login", user->login()) > 0;
+        email_busy = count("users", "email", user->email()) > 0;
+    }
+    return ex;
+}
+
+QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint32 limit)
+{
+    QString query_str = "SELECT * FROM pub_messages INNER JOIN users on "
+                        "users.id = CASE WHEN pub_messages.author_id IS NULL THEN 0 ELSE "
+                        "pub_messages.author_id END "
+                        "ORDER BY pub_messages.published ASC";
+
+    if (offset > 0)
+        query_str += " OFFSET :offset" + QString::number(offset);
+
+    query_str += " LIMIT :limit";
+
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":offset", offset);
+        query.bindValue(":limit", limit);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return QVector<std::shared_ptr<chat::Message>>();
+    }
+    app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return QVector<std::shared_ptr<chat::Message>>();
+    auto messages = QVector<std::shared_ptr<chat::Message>>();
+    if (query.numRowsAffected() > 0) {
+        while (query.next()) {
+            auto message = getMessage(query);
+            messages.push_back(message);
+        }
+    }
+    return messages;
+}
+
+QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong author_id,
+                                                               qlonglong recipient_id,
+                                                               quint32 offset,
+                                                               quint32 limit)
+{
+    QString query_str = "SELECT * FROM pub_messages WHERE "
+                        "author_id = :author_id, AND"
+                        "recipient_id = :recipient_id";
+
+    return QVector<std::shared_ptr<chat::Message>>();
+}
+
+qlonglong DB::count(
+    const QString &table, const QString &column, QVariant value, QString comparison, bool t)
 {
     QString query_str = "SELECT COUNT(*) FROM " + table;
     if (value != NULL) {
@@ -147,12 +242,17 @@ qulonglong DB::count(const QString &table, const QString &column, QVariant value
 
         if (value.userType() == QMetaType::UInt || value.userType() == QMetaType::ULongLong
             || value.userType() == QMetaType::Int)
-            query_str += " = :value";
+            query_str += comparison + ":value";
 
         if (value.userType() == QMetaType::QString) {
             if (t)
                 value = "%" + value.toString() + "%";
-            query_str += " LIKE :value";
+            if (comparison.trimmed() == "!=") {
+                comparison = " NOT ";
+            } else {
+                comparison = " ";
+            }
+            query_str += comparison + "LIKE :value";
         }
     }
     QSqlQuery query(db);
@@ -229,14 +329,14 @@ void DB::dbClose()
 std::shared_ptr<chat::User> DB::getUser(const QSqlQuery &query)
 {
     bool init = true;
-    qulonglong id = query.value("id").toULongLong();
+    qlonglong id = query.value("id").toLongLong();
     QString login = query.value("login").toString();
     QString email = query.value("email").toString();
     QString first_name = query.value("first_name").toString();
     QString last_name = query.value("last_name").toString();
-    qulonglong registered = query.value("registered").toULongLong();
+    qlonglong registered = query.value("registered").toULongLong();
     chat::user::status status = (chat::user::status) query.value("status").toUInt();
-    qulonglong session_key = query.value("session_key").toULongLong();
+    qlonglong session_key = query.value("session_key").toULongLong();
     QString hash = query.value("hash").toString();
     QString salt = query.value("salt").toString();
 
@@ -244,4 +344,53 @@ std::shared_ptr<chat::User> DB::getUser(const QSqlQuery &query)
         init, id, login, email, first_name, last_name, registered, status, session_key, hash, salt);
 
     return user;
+}
+
+std::shared_ptr<chat::User> DB::getUser(const QSqlQuery &query, int offset)
+{
+    bool init = true;
+    qlonglong id = query.value(offset).toLongLong();
+    QString login = query.value(++offset).toString();
+    QString email = query.value(++offset).toString();
+    QString first_name = query.value(++offset).toString();
+    QString last_name = query.value(++offset).toString();
+    qlonglong registered = query.value(++offset).toULongLong();
+    chat::user::status status = (chat::user::status) query.value(++offset).toUInt();
+    qlonglong session_key = query.value(++offset).toULongLong();
+    QString hash = query.value(++offset).toString();
+    QString salt = query.value(++offset).toString();
+
+    auto user = std::make_shared<chat::User>(
+        init, id, login, email, first_name, last_name, registered, status, session_key, hash, salt);
+
+    return user;
+}
+
+std::shared_ptr<chat::Message> DB::getMessage(const QSqlQuery &query)
+{
+    int author_id_offset = 5;
+    int recipient_id_offset = 15;
+
+    bool init = true;
+    qlonglong id = query.value("id").toLongLong();
+    qlonglong author_id = query.value("author_id").toLongLong();
+    qlonglong recipient_id = query.value("recipient_id").toLongLong();
+    QString text = query.value("text").toString();
+    qlonglong published = query.value("published").toLongLong();
+    chat::msg::status status = (chat::msg::status) query.value("status").toUInt();
+
+    auto message = std::make_shared<chat::Message>(init,
+                                                   id,
+                                                   author_id,
+                                                   recipient_id,
+                                                   text,
+                                                   published,
+                                                   status);
+    auto author = getUser(query, author_id_offset);
+    message->setAuthor(author);
+    if (query.record().count() > recipient_id_offset) {
+        auto recipient = getUser(query, recipient_id_offset);
+        message->setRecipient(recipient);
+    }
+    return message;
 }

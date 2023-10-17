@@ -15,8 +15,8 @@ void MainThread::run()
 
     bool eb;
     bool lb;
-    auto tst = db.createUser(std::make_shared<chat::User>("login",
-                                                          "email",
+    auto tst = db.createUser(std::make_shared<chat::User>("dddlogin",
+                                                          "dddemail",
                                                           "fname",
                                                           "lname",
                                                           1,
@@ -26,6 +26,7 @@ void MainThread::run()
                                                           "bbb"),
                              lb,
                              eb);
+    auto tsm = db.getPubMessages();
     ConsoleWrite("✅ DB Initialized End");
 }
 

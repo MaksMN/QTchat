@@ -6,10 +6,9 @@
 #include <QObject>
 #include <QtSql>
 #include "app.h"
+#include "message.h"
 #include "user.h"
 #include <memory>
-typedef unsigned int uint;
-typedef unsigned long long ullong;
 
 class DB
 {
@@ -32,17 +31,39 @@ public:
     bool dbExec(QSqlQuery &query);
 
     std::shared_ptr<chat::User> getUserByLogin(const QString &login);
-    std::shared_ptr<chat::User> getUserByID(qulonglong &id);
-    std::shared_ptr<chat::User> getUserByID(qulonglong &&id);
+    std::shared_ptr<chat::User> getUserByID(qlonglong &id);
+    std::shared_ptr<chat::User> getUserByID(qlonglong &&id);
     QVector<std::shared_ptr<chat::User>> getUsers(const QString &keyword = QString(),
-                                                  uint offset = 0,
-                                                  uint limit = 100);
+                                                  quint32 offset = 0,
+                                                  quint32 limit = 100);
+    /// Добавляет нового пользователя в БД
     bool createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy);
+    /// Обновляет данные существующего пользователя в БД
+    bool updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy);
 
-    qulonglong count(const QString &table,
-                     const QString &column = QString(),
-                     QVariant value = NULL,
-                     bool t = false);
+    QVector<std::shared_ptr<chat::Message>> getPubMessages(quint32 offset = 0, quint32 limit = 100);
+
+    QVector<std::shared_ptr<chat::Message>> getPrivateMessages(qlonglong author_id,
+                                                               qlonglong recipient_id,
+                                                               quint32 offset = 0,
+                                                               quint32 limit = 100);
+    /*!
+     * получает количество записей в БД
+     * \param table Таблица
+     * \param column Колонка
+     * \param value Значение колонки. 
+     * \param comparison Сравнение:
+     * " = " " != " - для целочисленных типов value;
+     * " = " для строковых типов value будет преобразовано в LIKE;
+     * " != " для строковых типов value будет преобразовано в NOT LIKE;      
+     * \param t = true - добавит символ шаблона к строковой %value%
+     * \return 
+     */
+    qlonglong count(const QString &table,
+                    const QString &column = QString(),
+                    QVariant value = NULL,
+                    QString comparison = " = ",
+                    bool t = false);
 
     void printDBError();
     void printQueryError(const QSqlQuery &query);
@@ -51,6 +72,8 @@ public:
 
 private:
     std::shared_ptr<chat::User> getUser(const QSqlQuery &query);
+    std::shared_ptr<chat::User> getUser(const QSqlQuery &query, int offset);
+    std::shared_ptr<chat::Message> getMessage(const QSqlQuery &query);
 };
 
 #endif // DB_H
