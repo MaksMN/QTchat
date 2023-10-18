@@ -42,11 +42,14 @@ public:
     bool updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy);
 
     QVector<std::shared_ptr<chat::Message>> getPubMessages(quint32 offset = 0, quint32 limit = 100);
+    bool createMessage(std::shared_ptr<chat::Message> message);
+    bool updateMessage(std::shared_ptr<chat::Message>);
 
-    QVector<std::shared_ptr<chat::Message>> getPrivateMessages(qlonglong author_id,
-                                                               qlonglong recipient_id,
+    QVector<std::shared_ptr<chat::Message>> getPrivateMessages(qlonglong reader_id,
+                                                               qlonglong interlocutor_id,
                                                                quint32 offset = 0,
                                                                quint32 limit = 100);
+
     /*!
      * получает количество записей в БД
      * \param table Таблица

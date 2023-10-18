@@ -220,16 +220,116 @@ QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint
     return messages;
 }
 
-QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong author_id,
-                                                               qlonglong recipient_id,
+bool DB::createMessage(std::shared_ptr<chat::Message> message)
+{
+    QString query_str;
+    if (message->isPublic())
+        query_str = "INSERT INTO pub_messages (author_id, text, published, status) "
+                    "VALUES (:author_id, :text, :published, :status)";
+    else
+        query_str
+            = "INSERT INTO private_messages (author_id, recipient_id, text, published, status) "
+              "VALUES (:author_id, :recipient_id, :text, :published, :status)";
+    QSqlQuery query(db);
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":author_id", message->author_id());
+        query.bindValue(":recipient_id", message->recipient_id());
+        query.bindValue(":text", message->text());
+        query.bindValue(":published", message->published());
+        query.bindValue(":status", (int) message->status());
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    bool ex = dbExec(query);
+    if (query.numRowsAffected() < 1) {
+        app->ConsoleWrite("❌ Filed query: " + query.executedQuery());
+    }
+    return ex;
+}
+
+bool DB::updateMessage(std::shared_ptr<chat::Message> message)
+{
+    QString query_str;
+
+    if (message->isPublic())
+        query_str = "UPDATE pub_messages SET "
+                    "author_id = :author_id, "
+                    "text = :text, "
+                    "published = :published, "
+                    "status =:status "
+                    "WHERE id = :id";
+    else
+        query_str
+            = "UPDATE private_messages SET author_id = :author_id, recipient_id = :recipient_id, "
+              "text = :text, published = :published, status = :status WHERE id = :id";
+
+    QSqlQuery query(db);
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":author_id", message->author_id());
+        if (message->isPrivate())
+            query.bindValue(":recipient_id", message->recipient_id());
+        query.bindValue(":text", message->text());
+        query.bindValue(":published", message->published());
+        query.bindValue(":status", message->status());
+        query.bindValue(":id", message->id());
+
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    bool ex = dbExec(query);
+    if (query.numRowsAffected() < 1) {
+        app->ConsoleWrite("❌ Filed query: " + query.executedQuery());
+    }
+    return ex;
+}
+
+QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong reader_id,
+                                                               qlonglong interlocutor_id,
                                                                quint32 offset,
                                                                quint32 limit)
 {
-    QString query_str = "SELECT * FROM pub_messages WHERE "
-                        "author_id = :author_id, AND"
-                        "recipient_id = :recipient_id";
+    QString query_str = "SELECT * FROM private_messages as pm "
+                        "INNER JOIN users as u1 on "
+                        "u1.id = CASE WHEN pm.author_id IS NULL THEN 0  ELSE pm.author_id END "
+                        "INNER JOIN users as u2 on "
+                        "u2.id = CASE WHEN pm.recipient_id IS NULL THEN 0 ELSE pm.recipient_id END "
+                        "WHERE "
+                        "(pm.author_id = :reader_id AND pm.recipient_id = :interlocutor_id) OR "
+                        "(pm.author_id = :interlocutor_id AND pm.recipient_id = :reader_id) "
+                        "ORDER BY pm.published ASC";
 
-    return QVector<std::shared_ptr<chat::Message>>();
+    if (offset > 0)
+        query_str += " OFFSET :offset" + QString::number(offset);
+
+    query_str += " LIMIT :limit";
+
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":reader_id", reader_id);
+        query.bindValue(":interlocutor_id", interlocutor_id);
+        query.bindValue(":offset", offset);
+        query.bindValue(":limit", limit);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return QVector<std::shared_ptr<chat::Message>>();
+    }
+    app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return QVector<std::shared_ptr<chat::Message>>();
+    auto messages = QVector<std::shared_ptr<chat::Message>>();
+    if (query.numRowsAffected() > 0) {
+        while (query.next()) {
+            auto message = getMessage(query);
+            messages.push_back(message);
+        }
+    }
+    return messages;
 }
 
 qlonglong DB::count(
@@ -368,8 +468,21 @@ std::shared_ptr<chat::User> DB::getUser(const QSqlQuery &query, int offset)
 
 std::shared_ptr<chat::Message> DB::getMessage(const QSqlQuery &query)
 {
-    int author_id_offset = 5;
-    int recipient_id_offset = 15;
+    QString fieldName = "id";
+    int msg_index = query.record().indexOf(fieldName);
+    int author_id_index = -1;
+    int recipient_id_index = -1;
+
+    for (int i = msg_index + 1; i < query.record().count(); i++) {
+        if (author_id_index == -1 && query.record().fieldName(i) == fieldName) {
+            author_id_index = i;
+            continue;
+        }
+        if (author_id_index > msg_index && query.record().fieldName(i) == fieldName) {
+            recipient_id_index = i;
+            break;
+        }
+    }
 
     bool init = true;
     qlonglong id = query.value("id").toLongLong();
@@ -386,10 +499,10 @@ std::shared_ptr<chat::Message> DB::getMessage(const QSqlQuery &query)
                                                    text,
                                                    published,
                                                    status);
-    auto author = getUser(query, author_id_offset);
+    auto author = getUser(query, author_id_index);
     message->setAuthor(author);
-    if (query.record().count() > recipient_id_offset) {
-        auto recipient = getUser(query, recipient_id_offset);
+    if (recipient_id_index > author_id_index) {
+        auto recipient = getUser(query, recipient_id_index);
         message->setRecipient(recipient);
     }
     return message;

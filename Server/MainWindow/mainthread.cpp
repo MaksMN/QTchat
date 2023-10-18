@@ -26,7 +26,10 @@ void MainThread::run()
                                                           "bbb"),
                              lb,
                              eb);
-    auto tsm = db.getPubMessages();
+    //auto tsm = db.getPubMessages();
+    auto pm = db.getPrivateMessages(3, 5);
+    pm[1]->setText("zzzzzzzz");
+    auto inspm = db.updateMessage(pm[1]);
     ConsoleWrite("✅ DB Initialized End");
 }
 
