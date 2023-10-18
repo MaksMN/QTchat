@@ -13,14 +13,20 @@ class MainThread : public QThread, APP
 private:
     MainWindow *mainWindow;
     DB db{this};
+    bool updated = true;
+signals:
+    void mainWindowClosed();
+public slots:
+    void handleMainWindowClosed();
 
 public:
     explicit MainThread(MainWindow *_mainWindow, QObject *parent = nullptr);
 
     void run() override;
-
     void ConsoleWrite(const QString &line) override;
     void ConsoleWrite(const QString &&line) override;
+
+    void Updater();
 };
 
 #endif // MAINTHREAD_H

@@ -20,7 +20,9 @@ int main(int argc, char *argv[])
      * Здесь запускается второй поток.
      * Он нужен для того чтобы не блокировать основной.
      */
+
     MainThread th(&w);
+    QObject::connect(&w, &MainWindow::mainWindowClosed, &th, &MainThread::handleMainWindowClosed);
     th.start();
 
     return a.exec();

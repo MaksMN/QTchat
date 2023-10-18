@@ -26,13 +26,12 @@ void Console::writeLine(QString &line)
     _lines.push_back(line);
     QString lines;
     for (int i = 0; i < _lines.size(); ++i) {
-        lines += _lines[i] + '\n';
+        lines += ">" + _lines[i] + '\n';
     }
     _console->setText(lines);
     QScrollBar *scrollBar = _console->verticalScrollBar();
     scrollBar->setValue(scrollBar->maximum());
-    _console->moveCursor(QTextCursor::End);
-    // QApplication::processEvents();
+    _console->moveCursor(QTextCursor::End);    
 }
 
 void Console::writeLine(QString &&line)

@@ -25,6 +25,15 @@ public slots:
 private slots:
     void on_actionShut_Down_triggered();
     void on_actionServer_Settings_triggered();
+signals:
+    void mainWindowClosed();
+
+protected:
+    void closeEvent(QCloseEvent *event) override
+    {
+        emit mainWindowClosed();
+        QMainWindow::closeEvent(event);
+    }
 
 private:
     QString s = "test;";
