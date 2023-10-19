@@ -1,5 +1,6 @@
 #ifndef USER_H
 #define USER_H
+#include <QDateTime>
 #include <QObject>
 #include "ChatStructs_global.h"
 #include "SHA1.h"
@@ -136,6 +137,8 @@ public:
     QString getGroup();
     QString pass_hash() const;
     QString pass_salt() const;
+
+    QString regDateTime();
 };
 } // namespace chat
 #endif // USER_H

@@ -14,6 +14,11 @@ void Message::setRecipient(std::shared_ptr<chat::User> newRecipient)
     _recipient = newRecipient;
 }
 
+QString Message::pubDateTime()
+{
+    return Misc::stampTotime(_published);
+}
+
 std::shared_ptr<chat::User> Message::author() const
 {
     return _author;
@@ -119,7 +124,11 @@ Message::Message(qlonglong author_id, const QString &text, qlonglong published)
     , _text(text)
     , _published(std::move(published))
     , _status(msg::status::public_)
-{}
+{
+    if (published == 0) {
+        _published = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 Message::Message(bool init,
                  qlonglong id,
@@ -133,7 +142,11 @@ Message::Message(bool init,
     , _text(text)
     , _published(std::move(published))
     , _status(status)
-{}
+{
+    if (published == 0) {
+        _published = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 Message::Message(qlonglong author_id,
                  qlonglong recipient_id,
@@ -144,7 +157,11 @@ Message::Message(qlonglong author_id,
     , _text(text)
     , _published(std::move(published))
     , _status(msg::status::private_)
-{}
+{
+    if (published == 0) {
+        _published = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 Message::Message(bool init,
                  qlonglong id,
@@ -160,6 +177,10 @@ Message::Message(bool init,
     , _text(text)
     , _published(std::move(published))
     , _status(status)
-{}
+{
+    if (published == 0) {
+        _published = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 } // namespace chat

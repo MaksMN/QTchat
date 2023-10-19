@@ -1,8 +1,10 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
+#include <QDateTime>
 #include <QObject>
 #include "ChatStructs_global.h"
 #include "flags.h"
+#include "misc.h"
 #include "user.h"
 
 namespace chat {
@@ -88,6 +90,8 @@ public:
     void setAuthor(std::shared_ptr<chat::User> newAuthor);
     std::shared_ptr<chat::User> recipient() const;
     void setRecipient(std::shared_ptr<chat::User> newRecipient);
+
+    QString pubDateTime();
 };
 } // namespace chat
 #endif // MESSAGE_H

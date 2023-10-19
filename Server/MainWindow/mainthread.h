@@ -6,6 +6,7 @@
 #include "app.h"
 #include "db.h"
 #include "mainwindow.h"
+#include <memory>
 
 class MainThread : public QThread, APP
 {

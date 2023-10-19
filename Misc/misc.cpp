@@ -1,4 +1,6 @@
 #include "misc.h"
+#include <QDateTime>
+#include <QLocale>
 #include <QMessageBox>
 #include "random"
 Misc::Misc()
@@ -52,4 +54,19 @@ bool Misc::iniWrite(const QString &section,
         return false;
     };
     return true;
+}
+
+QString Misc::stampTotime(qlonglong timestamp)
+{
+    QLocale systemLocale = QLocale::system();
+    QString dateFormat = systemLocale.dateFormat(QLocale::ShortFormat);
+    QString timeFormat = systemLocale.timeFormat(QLocale::ShortFormat);
+
+    QDateTime dateTime;
+    dateTime.setSecsSinceEpoch(timestamp);
+
+    QString dateString = dateTime.toString(dateFormat);
+    QString timeString = dateTime.toString(timeFormat);
+
+    return dateString + " " + timeString;
 }

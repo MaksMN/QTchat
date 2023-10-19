@@ -25,6 +25,7 @@ public:
                          int value,
                          CSimpleIniA *ini,
                          const QString &path);
+    static QString stampTotime(qlonglong timestamp);
 };
 
 #endif // MISC_H

@@ -1,4 +1,5 @@
 #include "user.h"
+
 #include "misc.h"
 chat::User::User() {}
 
@@ -174,6 +175,11 @@ QString User::pass_salt() const
     return _pass_salt;
 }
 
+QString User::regDateTime()
+{
+    return Misc::stampTotime(_registered);
+}
+
 User::User(const QString &login,
            const QString &email,
            const QString &first_name,
@@ -192,7 +198,11 @@ User::User(const QString &login,
     , _session_key(std::move(session_key))
     , _pass_hash(pass_hash)
     , _pass_salt(pass_salt)
-{}
+{
+    if (registered == 0) {
+        _registered = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 User::User(qlonglong id,
            const QString &login,
@@ -206,7 +216,11 @@ User::User(qlonglong id,
     , _last_name(last_name)
     , _registered(std::move(registered))
     , _status(status)
-{}
+{
+    if (registered == 0) {
+        _registered = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 User::User(bool init,
            qlonglong id,
@@ -230,6 +244,10 @@ User::User(bool init,
     , _session_key(std::move(session_key))
     , _pass_hash(pass_hash)
     , _pass_salt(pass_salt)
-{}
+{
+    if (registered == 0) {
+        _registered = QDateTime::currentSecsSinceEpoch();
+    }
+}
 
 } // namespace chat
