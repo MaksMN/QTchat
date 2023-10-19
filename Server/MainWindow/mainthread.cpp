@@ -40,12 +40,18 @@ void MainThread::ConsoleWrite(const QString &&line)
     ConsoleWrite(line);
 }
 
+void MainThread::UpdateUsers(const QVector<std::shared_ptr<chat::User> > &users)
+{
+    QMetaObject::invokeMethod(mainWindow,
+                              "updateUsers",
+                              Qt::QueuedConnection,
+                              Q_ARG(QVector<std::shared_ptr<chat::User> >, users));
+}
+
 void MainThread::Updater()
 {
-    qDebug("updater runing1");
-    QThread::currentThread()->sleep(5);
-    qDebug("updater runing2");
-    QThread::currentThread()->sleep(5);
+    auto users = db.getUsers();
+    UpdateUsers(users);
 }
 void MainThread::handleMainWindowClosed()
 {

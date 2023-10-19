@@ -26,8 +26,6 @@ add_library(ChatStructs SHARED
     ../Misc/misc.h ../Misc/misc.cpp
     userwidget.h userwidget.cpp userwidget.ui
     messagewidget.h messagewidget.cpp messagewidget.ui
-    useritem.h useritem.cpp
-
 
 )
 

@@ -1,11 +1,10 @@
 #ifndef USERWIDGET_H
 #define USERWIDGET_H
 
+#include <QListWidgetItem>
 #include <QWidget>
 #include "user.h"
 #include <memory>
-typedef unsigned int uint;
-typedef unsigned long long ullong;
 namespace Ui {
 class UserWidget;
 }
@@ -17,11 +16,18 @@ class CHATSTRUCTS_EXPORT UserWidget : public QWidget
 public:
     explicit UserWidget(QWidget *parent = nullptr);
     ~UserWidget();
-    void setUser(std::shared_ptr<chat::User> user);
-    ullong userID();
+    void Update(const std::shared_ptr<chat::User> &user);
+    void Update();
+
+    int id() const;
+    void setId(int id);
+    QListWidgetItem *item() const;
+    std::shared_ptr<chat::User> user() const;
+    void setUser(const std::shared_ptr<chat::User> &user);
 
 private:
-    ullong _userID;
+    int _id = -1;
+    QListWidgetItem *_item{new QListWidgetItem()};
     std::shared_ptr<chat::User> _user = nullptr;
     Ui::UserWidget *ui;
 };

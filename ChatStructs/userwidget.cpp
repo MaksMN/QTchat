@@ -8,7 +8,8 @@ UserWidget::UserWidget(QWidget *parent)
 
 {
     ui->setupUi(this);
-    this->setVisible(false);
+    _item->setSizeHint(this->sizeHint());
+    _item->setHidden(true);
 }
 
 UserWidget::~UserWidget()
@@ -16,21 +17,46 @@ UserWidget::~UserWidget()
     delete ui;
 }
 
-void UserWidget::setUser(std::shared_ptr<chat::User> user)
+void UserWidget::Update(const std::shared_ptr<chat::User> &user)
 {
-    if (user == nullptr) {
-        this->setVisible(false);
-        return;
-    }
     _user = user;
-    _userID = user->id();
-    ui->labelUserLogin->setText(user->login());
-    ui->labelUserName->setText(user->FullName());
-    ui->labelUserReg->setText(user->regDateTime());
-    this->setVisible(true);
+    Update();
 }
 
-ullong UserWidget::userID()
+void UserWidget::Update()
 {
-    return _userID;
+    if (_user == nullptr) {
+        _item->setHidden(true);
+        return;
+    }
+
+    ui->labelUserLogin->setText(_user->login());
+    ui->labelUserName->setText(_user->FullName());
+    ui->labelUserReg->setText(_user->regDateTime());
+    _item->setHidden(false);
+}
+
+int UserWidget::id() const
+{
+    return _id;
+}
+
+void UserWidget::setId(int id)
+{
+    _id = id;
+}
+
+QListWidgetItem *UserWidget::item() const
+{
+    return _item;
+}
+
+std::shared_ptr<chat::User> UserWidget::user() const
+{
+    return _user;
+}
+
+void UserWidget::setUser(const std::shared_ptr<chat::User> &user)
+{
+    _user = user;
 }

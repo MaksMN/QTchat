@@ -67,6 +67,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         build/debug/server.ini
         MainWindow/mainthread.h MainWindow/mainthread.cpp
         app.h app.cpp
+        MainWindow/userscontainer.h MainWindow/userscontainer.cpp
 
     )
 
