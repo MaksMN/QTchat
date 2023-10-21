@@ -13,13 +13,12 @@ void MainThread::run()
     db.initialize();
     ConsoleWrite("✅DB Initialized");
     QTimer timer;
-    timer.setInterval(1000); // Интервал в миллисекундах (1000 мс = 1 сек)
-    timer.setSingleShot(true); // Установите в true, если нужен однократный запуск таймера
+    timer.setInterval(2000); // Интервал в миллисекундах (1000 мс = 1 сек)
+    timer.setSingleShot(false); // Установите в true, если нужен однократный запуск таймера
 
     QObject::connect(&timer, &QTimer::timeout, [&]() {
         if (!updated)
-            timer.stop();
-        qDebug("сработал таймер");
+            timer.stop();        
         Updater();
     });
 
@@ -52,8 +51,9 @@ void MainThread::UpdateUsers(QVector<std::shared_ptr<chat::User>> users)
 
 void MainThread::Updater()
 {
-    auto users_count = db.count("users");
-    auto users = db.getUsers(QString(), 1, users_count);
+    //auto users_count = db.count("users");
+    int offset = mainWindow->getTopUserItem();
+    auto users = db.getUsers(QString(), offset, 100);
     UpdateUsers(users);
 }
 void MainThread::handleMainWindowClosed()

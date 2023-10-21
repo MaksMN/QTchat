@@ -13,7 +13,7 @@ private:
     QListWidget *_list = nullptr;
     QVector<std::shared_ptr<chat::User>> _users;
     QVector<UserWidget *> _widgets;
-    int _count = 100;
+    int _count = 0;
 
 public:
     UsersContainer();
