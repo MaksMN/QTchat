@@ -4,12 +4,14 @@ UsersContainer::UsersContainer() {}
 
 UsersContainer::UsersContainer(QListWidget *list)
     : _list(list)
-{
-    
-}
+{}
 
 void UsersContainer::Update(QVector<std::shared_ptr<chat::User>> &users)
 {
+    if (users.isEmpty() && _list->count() > 0) {
+        _list->clear();
+        return;
+    }
     QPoint topLeft = _list->viewport()->rect().topLeft();
     QListWidgetItem *topItem = _list->itemAt(topLeft);
     int topItemID = _list->row(topItem);
@@ -19,21 +21,22 @@ void UsersContainer::Update(QVector<std::shared_ptr<chat::User>> &users)
     if (topItemID + users.size() > _list->count()) {
         int ex = topItemID + users.size() - _list->count();
         for (int i = 0; i < ex; ++i) {
-            QListWidgetItem *item = new QListWidgetItem();
-            _list->addItem(item);
+            UserWidget *w = new UserWidget();
+            _list->addItem(w->item());
+            _list->setItemWidget(w->item(), w);
         }
     }
-    //auto test = _list->count();
+
     for (int i = 0; i < users.size(); ++i) {
-        _list->item(i + topItemID)
-            ->setText(users[i]->FullName() + "\n" + users[i]->login() + "\n"
-                      + users[i]->regDateTime());
-        continue;
+        UserWidget *w = qobject_cast<UserWidget *>(_list->itemWidget(_list->item(i + topItemID)));
+        w->Update(users[i]);
     }
     if (_list->count() > topItemID + users.size()) {
         int start_delete = topItemID + users.size();
         for (int i = start_delete; i < _list->count(); ++i) {
+            QWidget *widget = _list->itemWidget(_list->item(i));
             delete _list->takeItem(i);
+            delete widget;
         }
     }
 }

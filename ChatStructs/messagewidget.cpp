@@ -3,11 +3,11 @@
 
 MessageWidget::MessageWidget(QWidget *parent)
     : QWidget(parent)
-    , _message(nullptr)
     , ui(new Ui::MessageWidget)
 {
     ui->setupUi(this);
-    this->setVisible(false);
+    _item->setSizeHint(this->sizeHint());
+    _item->setHidden(true);
 }
 
 MessageWidget::~MessageWidget()
@@ -15,7 +15,7 @@ MessageWidget::~MessageWidget()
     delete ui;
 }
 
-void MessageWidget::setMessage(std::shared_ptr<chat::Message> message)
+void MessageWidget::Update(std::shared_ptr<chat::Message> message)
 {
     _message = message;
     if (message == nullptr) {
@@ -26,4 +26,9 @@ void MessageWidget::setMessage(std::shared_ptr<chat::Message> message)
     ui->labelText->setText(message->text());
     ui->labelTime->setText(message->pubDateTime());
     this->setVisible(true);
+}
+
+QListWidgetItem *MessageWidget::item() const
+{
+    return _item;
 }

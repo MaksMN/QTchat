@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     console.setConsole(ui->console);
     _users = new UsersContainer(ui->listUsers);
+    _messages = new MessagesContainer(ui->listMessages);
 }
 
 MainWindow::~MainWindow()
@@ -32,6 +33,11 @@ void MainWindow::updateUsers(QVector<std::shared_ptr<chat::User>> users)
     _users->Update(users);
 }
 
+void MainWindow::updateMessages(QVector<std::shared_ptr<chat::Message>> messages)
+{
+    _messages->Update(messages);
+}
+
 int MainWindow::getTopUserItem()
 {
     QPoint topLeft = ui->listUsers->viewport()->rect().topLeft();
@@ -43,13 +49,14 @@ int MainWindow::getTopUserItem()
     return topItemID;
 }
 
-qlonglong MainWindow::getUserInTopItem()
+int MainWindow::getTopMessageItem()
 {
-    auto user = _users->getWidget(getTopUserItem())->user();
-    if (user == nullptr) {
-        return -1;
-    }
-    return user->id();
+    QPoint topLeft = ui->listMessages->viewport()->rect().topLeft();
+    QListWidgetItem *topItem = ui->listMessages->itemAt(topLeft);
+    int topItemID = ui->listMessages->row(topItem);
+    if (topItemID < 0)
+        topItemID = 0;
+    return topItemID;
 }
 
 void MainWindow::on_actionShut_Down_triggered()

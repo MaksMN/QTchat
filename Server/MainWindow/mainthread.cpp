@@ -49,12 +49,22 @@ void MainThread::UpdateUsers(QVector<std::shared_ptr<chat::User>> users)
                               Q_ARG(QVector<std::shared_ptr<chat::User>>, users));
 }
 
+void MainThread::UpdateMessages(QVector<std::shared_ptr<chat::Message>> messages)
+{
+    QMetaObject::invokeMethod(mainWindow,
+                              "updateMessages",
+                              Qt::QueuedConnection,
+                              Q_ARG(QVector<std::shared_ptr<chat::Message>>, messages));
+}
+
 void MainThread::Updater()
 {
-    //auto users_count = db.count("users");
     int offset = mainWindow->getTopUserItem();
     auto users = db.getUsers(QString(), offset, 100);
     UpdateUsers(users);
+    offset = mainWindow->getTopMessageItem();
+    auto messages = db.getPubMessages(offset, 100);
+    UpdateMessages(messages);
 }
 void MainThread::handleMainWindowClosed()
 {

@@ -6,6 +6,8 @@
 #include <QMutex>
 #include <QTranslator>
 #include "console.h"
+#include "message.h"
+#include "messagescontainer.h"
 #include "user.h"
 #include "userscontainer.h"
 
@@ -20,16 +22,20 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
 public slots:
     void consoleWrite(QString line);
     void updateUsers(QVector<std::shared_ptr<chat::User>> users);
+    void updateMessages(QVector<std::shared_ptr<chat::Message>> messages);
+
     /// Индекс элемента вверху окна списка
     int getTopUserItem();
-    /// User ID в верхнем элементе списка
-    qlonglong getUserInTopItem();
+    int getTopMessageItem();
+
 private slots:
     void on_actionShut_Down_triggered();
     void on_actionServer_Settings_triggered();
+
 signals:
     void mainWindowClosed();
 
@@ -45,6 +51,7 @@ public:
 
 private:
     UsersContainer *_users{};
+    MessagesContainer *_messages{};
     Console console{nullptr};
     QMutex mutex;
 };
