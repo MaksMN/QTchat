@@ -73,16 +73,20 @@ QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword,
                                                   quint32 offset,
                                                   quint32 limit)
 {
-    QString query_str = "SELECT * FROM users";
+    QString query_str = "SELECT * FROM users ";
     if (!keyword.isEmpty())
-        query_str += " WHERE "
+        query_str += "WHERE "
                      "login ILIKE :pattern OR "
                      "first_name ILIKE :pattern OR "
-                     "last_name ILIKE :pattern";
-    if (offset > 0)
-        query_str += " OFFSET :offset" + QString::number(offset);
+                     "last_name ILIKE :pattern "
+                     "ORDER BY login ASC ";
+    else
+        query_str += "ORDER BY id ASC ";
 
-    query_str += " LIMIT :limit";
+    if (offset > 0)
+        query_str += "OFFSET :offset ";
+
+    query_str += "LIMIT :limit";
 
     QSqlQuery query(db);
 

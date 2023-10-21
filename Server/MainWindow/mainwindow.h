@@ -22,7 +22,11 @@ public:
     ~MainWindow();
 public slots:
     void consoleWrite(QString line);
-    void updateUsers(const QVector<std::shared_ptr<chat::User>> &users);
+    void updateUsers(QVector<std::shared_ptr<chat::User>> users);
+    /// Индекс элемента вверху окна списка
+    int getTopUserItem();
+    /// User ID в верхнем элементе списка
+    qlonglong getUserInTopItem();
 private slots:
     void on_actionShut_Down_triggered();
     void on_actionServer_Settings_triggered();
@@ -36,8 +40,10 @@ protected:
         QMainWindow::closeEvent(event);
     }
 
-private:
+public:
     Ui::MainWindow *ui;
+
+private:
     UsersContainer *_users{};
     Console console{nullptr};
     QMutex mutex;

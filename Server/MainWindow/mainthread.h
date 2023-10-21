@@ -26,7 +26,7 @@ public:
     void run() override;
     void ConsoleWrite(const QString &line) override;
     void ConsoleWrite(const QString &&line) override;
-    void UpdateUsers(const QVector<std::shared_ptr<chat::User>> &users) override;
+    void UpdateUsers(QVector<std::shared_ptr<chat::User>> users) override;
 
     void Updater();
 };

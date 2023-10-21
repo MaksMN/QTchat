@@ -18,7 +18,8 @@ private:
 public:
     UsersContainer();
     UsersContainer(QListWidget *list);
-    void Update(const QVector<std::shared_ptr<chat::User>> &users);
+    void Update(QVector<std::shared_ptr<chat::User>> &users);
+    UserWidget *getWidget(int id = 0);
 };
 
 #endif // USERSCONTAINER_H

@@ -10,12 +10,25 @@ UsersContainer::UsersContainer(QListWidget *list)
         _widgets.push_back(w);
         _list->addItem(w->item());
         _list->setItemWidget(w->item(), w);
+        w->item()->setHidden(true);
         w->setId(i);
     }
 }
 
-void UsersContainer::Update(const QVector<std::shared_ptr<chat::User>> &users)
+void UsersContainer::Update(QVector<std::shared_ptr<chat::User>> &users)
 {
+    if (_count < users.size()) {
+        int ex = users.size() - _count;
+        for (int i = 0; i < ex; ++i) {
+            UserWidget *w = new UserWidget();
+            _widgets.push_back(w);
+            _list->addItem(w->item());
+            _list->setItemWidget(w->item(), w);
+            w->item()->setHidden(true);
+            w->setId(i);
+        }
+    }
+    _count = users.size();
     _users = users;
     for (int i = 0; i < _count; ++i) {
         if (users.size() > i) {
@@ -24,4 +37,9 @@ void UsersContainer::Update(const QVector<std::shared_ptr<chat::User>> &users)
         }
         _widgets[i]->Update(nullptr);
     }
+}
+
+UserWidget *UsersContainer::getWidget(int id)
+{
+    return _widgets[id];
 }

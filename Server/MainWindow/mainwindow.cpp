@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QScrollBar>
 #include "./ui_mainwindow.h"
 #include "serversettings.h"
 #include "user.h"
@@ -26,9 +27,29 @@ void MainWindow::consoleWrite(QString line)
     console.writeLine(line);
 }
 
-void MainWindow::updateUsers(const QVector<std::shared_ptr<chat::User>> &users)
+void MainWindow::updateUsers(QVector<std::shared_ptr<chat::User>> users)
 {
     _users->Update(users);
+}
+
+int MainWindow::getTopUserItem()
+{
+    QPoint topLeft = ui->listUsers->viewport()->rect().topLeft();
+    QListWidgetItem *topItem = ui->listUsers->itemAt(topLeft);
+    int topItemID = ui->listUsers->row(topItem);
+    if (topItemID < 0)
+        topItemID = 0;
+
+    return topItemID;
+}
+
+qlonglong MainWindow::getUserInTopItem()
+{
+    auto user = _users->getWidget(getTopUserItem())->user();
+    if (user == nullptr) {
+        return -1;
+    }
+    return user->id();
 }
 
 void MainWindow::on_actionShut_Down_triggered()

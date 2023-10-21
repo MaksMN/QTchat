@@ -1,5 +1,7 @@
 #include "mainthread.h"
-
+#include <QDebug>
+#include <QScrollBar>
+#include "ui_mainwindow.h"
 MainThread::MainThread(MainWindow *_mainWindow, QObject *parent)
     : QThread(parent)
     , mainWindow(_mainWindow)
@@ -12,7 +14,7 @@ void MainThread::run()
     ConsoleWrite("✅DB Initialized");
     QTimer timer;
     timer.setInterval(1000); // Интервал в миллисекундах (1000 мс = 1 сек)
-    timer.setSingleShot(false); // Установите в true, если нужен однократный запуск таймера
+    timer.setSingleShot(true); // Установите в true, если нужен однократный запуск таймера
 
     QObject::connect(&timer, &QTimer::timeout, [&]() {
         if (!updated)
@@ -40,17 +42,18 @@ void MainThread::ConsoleWrite(const QString &&line)
     ConsoleWrite(line);
 }
 
-void MainThread::UpdateUsers(const QVector<std::shared_ptr<chat::User> > &users)
+void MainThread::UpdateUsers(QVector<std::shared_ptr<chat::User>> users)
 {
     QMetaObject::invokeMethod(mainWindow,
                               "updateUsers",
                               Qt::QueuedConnection,
-                              Q_ARG(QVector<std::shared_ptr<chat::User> >, users));
+                              Q_ARG(QVector<std::shared_ptr<chat::User>>, users));
 }
 
 void MainThread::Updater()
 {
-    auto users = db.getUsers();
+    auto users_count = db.count("users");
+    auto users = db.getUsers(QString(), 1, users_count);
     UpdateUsers(users);
 }
 void MainThread::handleMainWindowClosed()
