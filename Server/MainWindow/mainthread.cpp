@@ -1,11 +1,14 @@
 #include "mainthread.h"
 #include <QDebug>
 #include <QScrollBar>
-#include "ui_mainwindow.h"
+#include "strings.h"
+
 MainThread::MainThread(MainWindow *_mainWindow, QObject *parent)
     : QThread(parent)
     , mainWindow(_mainWindow)
-{}
+{
+    mainWindow->mainThread = this;
+}
 
 void MainThread::run()
 {
@@ -59,7 +62,7 @@ void MainThread::UpdateMessages(QVector<std::shared_ptr<chat::Message>> messages
 
 void MainThread::Updater()
 {
-    int offset = mainWindow->getTopUserItem();
+    int offset = mainWindow->getTopUserItem() + 1;
     auto users = db.getUsers(QString(), offset, 100);
     UpdateUsers(users);
     offset = mainWindow->getTopMessageItem();
@@ -73,4 +76,53 @@ void MainThread::handleMainWindowClosed()
     mainWindow->setVisible(false);
     this->quit();
     this->wait();
+}
+
+void MainThread::deleteUserByID(qlonglong id)
+{
+    db.deleteUserByID(id);
+}
+
+void MainThread::banUserByID(qlonglong id)
+{
+    auto user = db.getUserByID(id);
+    if (!user)
+        return;
+    if (user->isBanned())
+        user->unban();
+    else
+        user->ban();
+
+    db.updateUser(user, "status", (int) user->status());
+}
+
+void MainThread::unloginUserByID(qlonglong id)
+{
+    auto user = db.getUserByID(id);
+    if (!user)
+        return;
+
+    if (db.updateUser(user, "session_key", 0)) {
+        ConsoleWrite(Strings::t(Strings::USER_SESSION_IS_DISABLED) + " (" + user->login() + ")");
+    } else {
+        ConsoleWrite(Strings::t(Strings::FAILED_TO_DISCONNECT_THE_USER) + " (" + user->login()
+                     + ")");
+    }
+}
+
+void MainThread::deleteMessage(qlonglong id)
+{
+    db.deleteItem(id);
+}
+
+void MainThread::hideMessage(qlonglong id)
+{
+    auto msg = db.getPubMessageByID(id);
+    if (!msg)
+        return;
+    if (msg->isHidden())
+        msg->unhide();
+    else
+        msg->hide();
+    db.updateMessage(msg);
 }

@@ -8,7 +8,7 @@ UserWidget::UserWidget(QWidget *parent)
 
 {
     ui->setupUi(this);
-    _item->setSizeHint(this->sizeHint());
+
     _item->setHidden(true);
 }
 
@@ -29,11 +29,13 @@ void UserWidget::Update()
         _item->setHidden(true);
         return;
     }
-
-    ui->labelUserLogin->setText(_user->login());
+    QString status = _user->getGroup();
+    ui->labelUserLogin->setText("@" + _user->login() + " (" + status + ")");
     ui->labelUserName->setText(_user->FullName());
     ui->labelUserReg->setText(_user->regDateTime());
+
     _item->setHidden(false);
+    _item->setSizeHint(this->sizeHint());
 }
 
 int UserWidget::id() const

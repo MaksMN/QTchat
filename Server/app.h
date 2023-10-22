@@ -12,8 +12,6 @@ public:
 
     virtual void ConsoleWrite(const QString &line) = 0;
     virtual void ConsoleWrite(const QString &&line) = 0;
-    virtual void UpdateUsers(QVector<std::shared_ptr<chat::User>> users) = 0;
-    virtual void UpdateMessages(QVector<std::shared_ptr<chat::Message>> messages) = 0;
 };
 
 #endif // APP_H

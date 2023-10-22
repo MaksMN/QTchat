@@ -69,6 +69,24 @@ std::shared_ptr<chat::User> DB::getUserByID(qlonglong &&id)
     return getUserByID(id);
 }
 
+void DB::deleteUserByID(qlonglong &id)
+{
+    QSqlQuery query(db);
+    if (id < 2) {
+        return;
+    }
+
+    bool qp = query.prepare("DELETE FROM users WHERE id = :id");
+    if (qp) {
+        query.bindValue(":id", id);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare(\"DELETE * FROM users WHERE login = :login\");");
+        app->ConsoleWrite("❌ :id = " + QString::number(id));
+    }
+
+    dbExec(query);
+}
+
 QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword,
                                                   quint32 offset,
                                                   quint32 limit)
@@ -99,7 +117,7 @@ QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword,
         app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
         return QVector<std::shared_ptr<chat::User>>();
     }
-    app->ConsoleWrite(query.executedQuery());
+    //app->ConsoleWrite(query.executedQuery());
     if (!dbExec(query))
         return QVector<std::shared_ptr<chat::User>>();
     auto users = QVector<std::shared_ptr<chat::User>>();
@@ -148,11 +166,11 @@ bool DB::createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &em
     return ex;
 }
 
-bool DB::updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy)
+bool DB::updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy, bool force)
 {
     login_busy = count("users", "login", user->login()) > 0;
     email_busy = count("users", "email", user->email()) > 0;
-    if (login_busy || email_busy)
+    if ((login_busy || email_busy) && !force)
         return false;
     QString query_str = "UPDATE users SET "
                         "login = :login, "
@@ -189,6 +207,28 @@ bool DB::updateUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &em
     return ex;
 }
 
+bool DB::updateUser(std::shared_ptr<chat::User> user, QString parameter, QVariant value)
+{
+    QString query_str = "UPDATE users SET " + parameter
+                        + " = :value "
+                          "WHERE id = :id;";
+    QSqlQuery query(db);
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":value", value);
+        query.bindValue(":id", user->id());
+
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return 0;
+    }
+    bool ex = dbExec(query);
+    if (query.numRowsAffected() < 1) {
+        return false;
+    }
+    return ex;
+}
+
 QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint32 limit)
 {
     QString query_str = "SELECT * FROM pub_messages INNER JOIN users on "
@@ -211,7 +251,7 @@ QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint
         app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
         return QVector<std::shared_ptr<chat::Message>>();
     }
-    app->ConsoleWrite(query.executedQuery());
+    //app->ConsoleWrite(query.executedQuery());
     if (!dbExec(query))
         return QVector<std::shared_ptr<chat::Message>>();
     auto messages = QVector<std::shared_ptr<chat::Message>>();
@@ -222,6 +262,35 @@ QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint
         }
     }
     return messages;
+}
+
+std::shared_ptr<chat::Message> DB::getPubMessageByID(qlonglong id)
+{
+    QString query_str = "SELECT * FROM pub_messages INNER JOIN users on "
+                        "users.id = CASE WHEN pub_messages.author_id IS NULL THEN 0 ELSE "
+                        "pub_messages.author_id END "
+                        " WHERE pub_messages.id = :id "
+                        "ORDER BY pub_messages.published ASC";
+
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":id", id);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return nullptr;
+    }
+    //app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return nullptr;
+    std::shared_ptr<chat::Message> message = nullptr;
+    if (query.numRowsAffected() > 0) {
+        while (query.next()) {
+            message = getMessage(query);
+        }
+    }
+    return message;
 }
 
 bool DB::createMessage(std::shared_ptr<chat::Message> message)
@@ -239,7 +308,7 @@ bool DB::createMessage(std::shared_ptr<chat::Message> message)
     if (qp) {
         query.bindValue(":author_id", message->author_id());
         query.bindValue(":recipient_id", message->recipient_id());
-        query.bindValue(":text", message->text());
+        query.bindValue(":text", message->real_text());
         query.bindValue(":published", message->published());
         query.bindValue(":status", (int) message->status());
     } else {
@@ -275,7 +344,7 @@ bool DB::updateMessage(std::shared_ptr<chat::Message> message)
         query.bindValue(":author_id", message->author_id());
         if (message->isPrivate())
             query.bindValue(":recipient_id", message->recipient_id());
-        query.bindValue(":text", message->text());
+        query.bindValue(":text", message->real_text());
         query.bindValue(":published", message->published());
         query.bindValue(":status", message->status());
         query.bindValue(":id", message->id());
@@ -289,6 +358,26 @@ bool DB::updateMessage(std::shared_ptr<chat::Message> message)
         app->ConsoleWrite("❌ Filed query: " + query.executedQuery());
     }
     return ex;
+}
+
+std::shared_ptr<chat::Message> DB::getMessageByID(qlonglong &id)
+{
+    return nullptr;
+}
+
+bool DB::deleteItem(qlonglong id, QString table)
+{
+    QSqlQuery query(db);
+
+    bool qp = query.prepare("DELETE FROM " + table + " WHERE id = :id");
+    if (qp) {
+        query.bindValue(":id", id);
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare(\"DELETE * FROM users WHERE login = :login\");");
+        app->ConsoleWrite("❌ :id = " + QString::number(id));
+    }
+
+    return dbExec(query);
 }
 
 QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong reader_id,
@@ -323,7 +412,7 @@ QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong reader_
         app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
         return QVector<std::shared_ptr<chat::Message>>();
     }
-    app->ConsoleWrite(query.executedQuery());
+    //app->ConsoleWrite(query.executedQuery());
     if (!dbExec(query))
         return QVector<std::shared_ptr<chat::Message>>();
     auto messages = QVector<std::shared_ptr<chat::Message>>();
@@ -334,6 +423,40 @@ QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong reader_
         }
     }
     return messages;
+}
+
+std::shared_ptr<chat::Message> DB::getPrivateMessageByID(qlonglong id)
+{
+    QString query_str = "SELECT * FROM private_messages as pm "
+                        "INNER JOIN users as u1 on "
+                        "u1.id = CASE WHEN pm.author_id IS NULL THEN 0  ELSE pm.author_id END "
+                        "INNER JOIN users as u2 on "
+                        "u2.id = CASE WHEN pm.recipient_id IS NULL THEN 0 ELSE pm.recipient_id END "
+                        "WHERE "
+                        "(pm.author_id = :reader_id AND pm.recipient_id = :interlocutor_id) OR "
+                        "(pm.author_id = :interlocutor_id AND pm.recipient_id = :reader_id) "
+                        "ORDER BY pm.published ASC WHERE pm.id = :id";
+
+    QSqlQuery query(db);
+
+    bool qp = query.prepare(query_str);
+    if (qp) {
+        query.bindValue(":id", id);
+
+    } else {
+        app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
+        return nullptr;
+    }
+    //app->ConsoleWrite(query.executedQuery());
+    if (!dbExec(query))
+        return nullptr;
+    std::shared_ptr<chat::Message> message = nullptr;
+    if (query.numRowsAffected() > 0) {
+        while (query.next()) {
+            message = getMessage(query);
+        }
+    }
+    return message;
 }
 
 qlonglong DB::count(
@@ -368,7 +491,7 @@ qlonglong DB::count(
         app->ConsoleWrite("❌ Filed query.prepare " + query.executedQuery());
         return 0;
     }
-    app->ConsoleWrite(query.executedQuery());
+    //app->ConsoleWrite(query.executedQuery());
     if (!dbExec(query))
         return 0;
 
@@ -491,7 +614,10 @@ std::shared_ptr<chat::Message> DB::getMessage(const QSqlQuery &query)
     bool init = true;
     qlonglong id = query.value("id").toLongLong();
     qlonglong author_id = query.value("author_id").toLongLong();
-    qlonglong recipient_id = query.value("recipient_id").toLongLong();
+
+    qlonglong recipient_id = recipient_id_index > author_id_index
+                                 ? query.value("recipient_id").toLongLong()
+                                 : 0;
     QString text = query.value("text").toString();
     qlonglong published = query.value("published").toLongLong();
     chat::msg::status status = (chat::msg::status) query.value("status").toUInt();

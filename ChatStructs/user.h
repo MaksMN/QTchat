@@ -11,12 +11,7 @@
 namespace chat {
 
 namespace user{
-enum status{
-    common = 1,
-    admin = 2,
-    service_admin = 4,
-    banned = 8,
-};
+enum status { common = 1, admin = 2, service_admin = 4, banned = 8 };
 }
 
 class CHATSTRUCTS_EXPORT User

@@ -116,12 +116,12 @@ void chat::User::ban()
 {
     if (isServiceAdmin())
         return;
-    _status = (user::status)(user::status::common | user::status::banned);
+    _status = static_cast<user::status>(user::banned | user::common);
 }
 
 void chat::User::unban()
 {
-    _status = flags.removeFlag(_status, user::status::banned);
+    _status = flags.removeFlag(_status, user::banned);
 }
 
 bool chat::User::isBanned()
@@ -131,7 +131,8 @@ bool chat::User::isBanned()
 
 bool chat::User::isAdmin()
 {
-    return flags.hasFlag(_status, user::status::admin);
+    return flags.hasFlag(_status, user::status::admin)
+           || flags.hasFlag(_status, user::status::service_admin);
 }
 
 bool chat::User::isServiceAdmin()
@@ -157,10 +158,15 @@ void chat::User::toUser()
 
 QString chat::User::getGroup()
 {
+    QString group;
     if (isAdmin())
-        return "Admin";
+        group += "Admin";
     else
-        return "User";
+        group += "User";
+
+    if (isBanned())
+        group += "banned";
+    return group;
 }
 
 namespace chat {

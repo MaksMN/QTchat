@@ -72,7 +72,9 @@ public:
     qlonglong id() const;
     qlonglong author_id() const;
     qlonglong recipient_id() const;
-    QString text() const;
+    QString text();
+    QString real_text();
+
     void setText(const QString &newText);
     qlonglong published() const;
     msg::status status() const;

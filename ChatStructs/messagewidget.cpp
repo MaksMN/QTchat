@@ -6,7 +6,7 @@ MessageWidget::MessageWidget(QWidget *parent)
     , ui(new Ui::MessageWidget)
 {
     ui->setupUi(this);
-    _item->setSizeHint(this->sizeHint());
+
     _item->setHidden(true);
 }
 
@@ -25,10 +25,16 @@ void MessageWidget::Update(std::shared_ptr<chat::Message> message)
     ui->labelUser->setText(message->author()->FullName());
     ui->labelText->setText(message->text());
     ui->labelTime->setText(message->pubDateTime());
+    _item->setSizeHint(this->sizeHint());
     this->setVisible(true);
 }
 
 QListWidgetItem *MessageWidget::item() const
 {
     return _item;
+}
+
+std::shared_ptr<chat::Message> MessageWidget::message() const
+{
+    return _message;
 }

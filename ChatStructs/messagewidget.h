@@ -20,6 +20,8 @@ public:
     void Update(std::shared_ptr<chat::Message> message);
     QListWidgetItem *item() const;
 
+    std::shared_ptr<chat::Message> message() const;
+
 private:
     Ui::MessageWidget *ui;
     std::shared_ptr<chat::Message> _message = nullptr;

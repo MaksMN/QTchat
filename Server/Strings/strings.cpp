@@ -1,6 +1,14 @@
 #include "strings.h"
 
 /*Strings*/
+const QString Strings::MESSAGE_NOT_SELECTED = QObject::tr("Message not selected");
+const QString Strings::FAILED_TO_DISCONNECT_THE_USER = QObject::tr("Failed to disconnect the user");
+const QString Strings::USER_SESSION_IS_DISABLED = QObject::tr("User session is disabled");
+const QString Strings::BAN = QObject::tr("Ban");
+const QString Strings::UNBAN = QObject::tr("Unban");
+const QString Strings::NOT_APPLICABLE_FOR_SERVICE_USERS = QObject::tr("Not applicable for service users");
+const QString Strings::CANNOT_DELETE_SERVICE_USERS = QObject::tr("Cannot delete service users");
+const QString Strings::USER_NOT_SELECTED = QObject::tr("User not selected");
 const QString Strings::DATABASE_QUERY_ERROR = QObject::tr("Database query error");
 const QString Strings::DATABASE_ERROR = QObject::tr("Database error");
 const QString Strings::FAILED_CONNECTION_TO_THE_DATABASE = QObject::tr("Failed connection to the database");

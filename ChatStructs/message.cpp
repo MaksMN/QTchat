@@ -54,7 +54,15 @@ qlonglong Message::recipient_id() const
     return _recipient_id;
 }
 
-QString Message::text() const
+QString Message::text()
+{
+    if (isHidden()) {
+        return "Message is hidden";
+    }
+    return _text;
+}
+
+QString Message::real_text()
 {
     return _text;
 }
@@ -111,12 +119,12 @@ bool Message::isRead()
 
 void Message::hide()
 {
-    flags.addFlag(_status, msg::status::hidden);
+    _status = flags.addFlag(_status, msg::status::hidden);
 }
 
 void Message::unhide()
 {
-    flags.removeFlag(_status, msg::status::hidden);
+    _status = flags.removeFlag(_status, msg::status::hidden);
 }
 
 Message::Message(qlonglong author_id, const QString &text, qlonglong published)

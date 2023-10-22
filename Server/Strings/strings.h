@@ -13,6 +13,14 @@ class Strings : public QObject
 private:
 public:
     /*Strings*/
+	static const QString MESSAGE_NOT_SELECTED;
+	static const QString FAILED_TO_DISCONNECT_THE_USER;
+	static const QString USER_SESSION_IS_DISABLED;
+	static const QString BAN;
+	static const QString UNBAN;
+	static const QString NOT_APPLICABLE_FOR_SERVICE_USERS;
+	static const QString CANNOT_DELETE_SERVICE_USERS;
+	static const QString USER_NOT_SELECTED;
 	static const QString DATABASE_QUERY_ERROR;
 	static const QString DATABASE_ERROR;
 	static const QString FAILED_CONNECTION_TO_THE_DATABASE;
