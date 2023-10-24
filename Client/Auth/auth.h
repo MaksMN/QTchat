@@ -2,7 +2,7 @@
 #define AUTH_H
 
 #include <QDialog>
-#include "client.h";
+#include "client.h"
 #include "user.h"
 
 namespace Ui {

@@ -168,6 +168,46 @@ QJsonObject MainThread::registerUser(std::shared_ptr<chat::User> user)
     return response;
 }
 
+QJsonObject MainThread::authUser(QString login, QString pass)
+{
+    QJsonObject response;
+    std::shared_ptr<chat::User> user = db.getUserByLogin(login);
+
+    if (!user) {
+        response["response"] = "fail";
+        return response;
+    }
+    if (!user->validatePass(pass)) {
+        response["response"] = "fail";
+        return response;
+    }
+    if (user->isBanned()) {
+        response["response"] = "banned";
+        return response;
+    }
+
+    response = user->serialiseJson();
+    response["response"] = "logged_in";
+    response["pass_hash"] = "0";
+    response["pass_salt"] = "0";
+    return response;
+}
+
+QJsonObject MainThread::getUsers(QJsonObject json)
+{
+    int offset = json["TopUserItem"].toInteger();
+    auto users = db.getUsers(QString(), offset);
+    QJsonArray jsonArray;
+    for (int i = 0; i < users.size(); i++) {
+        jsonArray.append(users[i]->serialiseJson());
+    }
+
+    QJsonDocument jsonDocument(jsonArray); // Создание JSON-документа из JSON-массива
+    QByteArray jsonString = jsonDocument.toJson(); // Преобразование JSON-документа в строку
+
+    return QJsonObject();
+}
+
 MainThread::MainThread(MainWindow *mainWindow, Server *server, QObject *parent)
     : QThread(parent)
     , mainWindow(mainWindow)

@@ -23,6 +23,10 @@ public:
     bool AuthPage();
     void setUser(std::shared_ptr<chat::User> &_user);
 
+    /// Индекс элемента вверху окна списка
+    int getTopUserItem();
+    int getTopMessageItem();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<chat::User> user = nullptr;

@@ -24,7 +24,7 @@ public:
 
     explicit Client(MainWindow *_mainWindow, QObject *parent = nullptr);
 
-    QJsonObject send(QJsonObject json);
+    QJsonObject send(QJsonObject json, int timeout = 0);
     void close();
 
 public slots:

@@ -23,10 +23,13 @@ void Client::clientSocket()
 }
 void Client::Update()
 {
-    if (mainWindow->command == not_registered)
-        return;
+    int offset = mainWindow->getTopUserItem() + 1;
+    QJsonObject request;
+    request["command"] = "getUsers";
+    request["TopUserItem"] = offset;
+    QJsonObject response = send(request);
 }
-QJsonObject Client::send(QJsonObject json)
+QJsonObject Client::send(QJsonObject json, int timeout)
 {
     QJsonObject jsonObject;
     QJsonDocument jsonDocument(json);
@@ -55,14 +58,16 @@ QJsonObject Client::send(QJsonObject json)
             // Обработка полученного сообщения
             qDebug() << "Received message from server:" << datagram;
         }
-
-        auto current = std::chrono::steady_clock::now();
-        elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(current - start).count();
-        if (elapsedSeconds >= 5) {
-            QJsonObject jsonObject;
-            jsonObject["response"] = "timeout";
-            return jsonObject;
-            break;
+        if (timeout > 0) {
+            auto current = std::chrono::steady_clock::now();
+            elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(current - start)
+                                 .count();
+            if (elapsedSeconds >= timeout) {
+                QJsonObject jsonObject;
+                jsonObject["response"] = "timeout";
+                return jsonObject;
+                break;
+            }
         }
     }
     jsonObject["response"] = "fail";

@@ -15,6 +15,8 @@ private:
     bool waitFlag = true;
 
     QJsonObject registerUser(QJsonObject json);
+    QJsonObject authUser(QJsonObject json);
+    QJsonObject getUsers(QJsonObject json);
 
 public:
     MainThread *mainThread = nullptr;

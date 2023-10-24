@@ -1,6 +1,8 @@
 #include "strings.h"
 
 /*Strings*/
+const QString Strings::USER_BANNED = QObject::tr("User banned");
+const QString Strings::INVALID_USERNAME_OR_PASSWORD = QObject::tr("Unsuccessful. Invalid username or password.");
 const QString Strings::EMAIL_BUSY = QObject::tr("Email busy");
 const QString Strings::LOGIN_BUSY = QObject::tr("Login busy");
 const QString Strings::UNKNOWN_REASON = QObject::tr("Unknown reason");

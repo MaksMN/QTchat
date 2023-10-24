@@ -13,6 +13,8 @@ class Strings : public QObject
 private:
 public:
     /*Strings*/
+	static const QString USER_BANNED;
+	static const QString INVALID_USERNAME_OR_PASSWORD;
 	static const QString EMAIL_BUSY;
 	static const QString LOGIN_BUSY;
 	static const QString UNKNOWN_REASON;

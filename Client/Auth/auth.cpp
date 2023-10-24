@@ -18,9 +18,9 @@ Auth::~Auth()
 
 void Auth::on_regButton_clicked()
 {
-    bool check = ui->regLogin->text().isEmpty() && ui->regEmail->text().isEmpty()
-                 && ui->regFirstName->text().isEmpty() && ui->regLastName->text().isEmpty()
-                 && ui->regPass->text().isEmpty();
+    bool check = ui->regLogin->text().isEmpty() || ui->regEmail->text().isEmpty()
+                 || ui->regFirstName->text().isEmpty() || ui->regLastName->text().isEmpty()
+                 || ui->regPass->text().isEmpty();
 
     if (check) {
         ui->labelMsg->setText(Strings::t(Strings::ALL_FIELDS_MUST_BE_FILLED_IN));
@@ -44,7 +44,7 @@ void Auth::on_regButton_clicked()
     jsonUser["command"] = "register";
 
     ui->labelMsg->setText(Strings::t(Strings::CONNECTION_TO_SERVER));
-    auto response = client.send(jsonUser);
+    auto response = client.send(jsonUser, 5);
 
     if (response["response"].toString() == "timeout") {
         ui->labelMsg->setText(Strings::t(Strings::NO_SERVER_RESPONSE));
@@ -72,12 +72,44 @@ void Auth::on_regButton_clicked()
         ui->labelMsg->setStyleSheet("color: red;");
     }
 
-    return;
+    close();
+}
+
+void Auth::on_loginButton_clicked()
+{
+    bool check = ui->loginLogin->text().isEmpty() || ui->loginPass->text().isEmpty();
+
+    if (check) {
+        ui->labelMsg->setText(Strings::t(Strings::ALL_FIELDS_MUST_BE_FILLED_IN));
+        ui->labelMsg->setStyleSheet("color: red;");
+        return;
+    }
+    QJsonObject request;
+    request["command"] = "auth";
+    request["login"] = ui->loginLogin->text();
+    request["pass"] = ui->loginPass->text();
+    auto response = client.send(request, 5);
+    if (response["response"].toString() == "fail") {
+        ui->labelMsg->setText(Strings::t(Strings::INVALID_USERNAME_OR_PASSWORD));
+        ui->labelMsg->setStyleSheet("color: red;");
+    }
+    if (response["response"].toString() == "timeout") {
+        ui->labelMsg->setText(Strings::t(Strings::NO_SERVER_RESPONSE));
+        ui->labelMsg->setStyleSheet("color: red;");
+    }
+    if (response["response"].toString() == "logged_in") {
+        user = user = std::make_shared<chat::User>();
+        user->deserialiseJson(response);
+        _authorized = true;
+    }
+    if (response["response"].toString() == "banned") {
+        ui->labelMsg->setText(Strings::t(Strings::USER_BANNED));
+        ui->labelMsg->setStyleSheet("color: red;");
+    }
+    close();
 }
 
 bool Auth::authorized() const
 {
     return _authorized;
 }
-
-void Auth::on_loginButton_clicked() {}

@@ -9,9 +9,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>332</width>
-    <height>274</height>
+    <width>303</width>
+    <height>280</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>60</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>303</width>
+    <height>318</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Auth</string>
@@ -20,8 +38,11 @@
    <iconset resource="../resources.qrc">
     <normaloff>:/icon/app.ico</normaloff>:/icon/app.ico</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
@@ -35,47 +56,86 @@
         <widget class="QWidget" name="widget" native="true">
          <property name="maximumSize">
           <size>
-           <width>500</width>
-           <height>100</height>
+           <width>1600</width>
+           <height>1600</height>
           </size>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Login</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
-               <widget class="QLineEdit" name="loginLogin"/>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="loginPass"/>
-              </item>
-             </layout>
-            </item>
-           </layout>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QWidget" name="widget_5" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QWidget" name="widget_3" native="true">
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Login</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>Password</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="widget_4" native="true">
+               <layout class="QGridLayout" name="gridLayout_5">
+                <item row="0" column="0">
+                 <widget class="QLineEdit" name="loginLogin">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maxLength">
+                   <number>20</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLineEdit" name="loginPass">
+                  <property name="maxLength">
+                   <number>20</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
-          <item row="1" column="0">
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="loginButton">
             <property name="text">
-             <string>PushButton</string>
+             <string>Login</string>
             </property>
            </widget>
           </item>
@@ -142,19 +202,39 @@
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
-               <widget class="QLineEdit" name="regFirstName"/>
+               <widget class="QLineEdit" name="regFirstName">
+                <property name="maxLength">
+                 <number>20</number>
+                </property>
+               </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="regLastName"/>
+               <widget class="QLineEdit" name="regLastName">
+                <property name="maxLength">
+                 <number>20</number>
+                </property>
+               </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="regEmail"/>
+               <widget class="QLineEdit" name="regEmail">
+                <property name="maxLength">
+                 <number>20</number>
+                </property>
+               </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="regLogin"/>
+               <widget class="QLineEdit" name="regLogin">
+                <property name="maxLength">
+                 <number>20</number>
+                </property>
+               </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="regPass"/>
+               <widget class="QLineEdit" name="regPass">
+                <property name="maxLength">
+                 <number>20</number>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
@@ -174,10 +254,19 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QLabel" name="labelMsg">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>60</height>
+      </size>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

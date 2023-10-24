@@ -26,6 +26,29 @@ QJsonObject Server::registerUser(QJsonObject json)
     return result;
 }
 
+QJsonObject Server::authUser(QJsonObject json)
+{
+    QJsonObject result;
+    QMetaObject::invokeMethod(mainThread,
+                              "authUser",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QJsonObject, result),
+                              Q_ARG(QString, json["login"].toString()),
+                              Q_ARG(QString, json["pass"].toString()));
+    return result;
+}
+
+QJsonObject Server::getUsers(QJsonObject json)
+{
+    QJsonObject result;
+    QMetaObject::invokeMethod(mainThread,
+                              "getUsers",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QJsonObject, result),
+                              Q_ARG(QJsonObject, json));
+    return result;
+}
+
 Server::Server(QThread *parent)
     : QThread{parent}
 {
@@ -83,6 +106,12 @@ QJsonObject Server::serverHandle(QJsonObject json)
     QJsonObject response;
     if (json["command"].toString() == "register") {
         return registerUser(json);
+    }
+    if (json["command"].toString() == "auth") {
+        return authUser(json);
+    }
+    if (json["command"].toString() == "getUsers") {
+        return getUsers(json);
     }
 
     return response;
