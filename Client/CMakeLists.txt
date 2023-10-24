@@ -61,6 +61,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MainWindow/commands.h
         Auth/auth.h Auth/auth.cpp Auth/auth.ui
         ../Misc/misc.cpp ../Misc/misc.h
+        MainWindow/userscontainer.h MainWindow/userscontainer.cpp
+        MainWindow/messagescontainer.cpp MainWindow/messagescontainer.h
 
 
     )

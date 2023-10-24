@@ -7,11 +7,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    _users = new UsersContainer(ui->listUsers);
+    _messages = new MessagesContainer(ui->listMessages);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete _users;
+    delete _messages;
 }
 
 bool MainWindow::AuthPage()
@@ -47,4 +51,14 @@ int MainWindow::getTopMessageItem()
     if (topItemID < 0)
         topItemID = 0;
     return topItemID;
+}
+
+void MainWindow::updateUsers(QVector<std::shared_ptr<chat::User>> users)
+{
+    _users->Update(users);
+}
+
+void MainWindow::updateMessages(QVector<std::shared_ptr<chat::Message>> messages)
+{
+    _messages->Update(messages);
 }

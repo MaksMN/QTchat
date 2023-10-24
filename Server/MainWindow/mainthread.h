@@ -30,9 +30,9 @@ public slots:
     void hideMessage(qlonglong id);
     void consoleWrite(const QString &line);
     QVector<std::shared_ptr<chat::User>> getUsers(int offset);
-    QJsonObject registerUser(std::shared_ptr<chat::User> user);
-    QJsonObject authUser(QString login, QString pass);
-    QJsonObject getUsers(QJsonObject json);
+    QJsonDocument registerUser(std::shared_ptr<chat::User> user);
+    QJsonDocument authUser(QString login, QString pass);
+    QJsonDocument getUsers(QJsonDocument json);
 
 public:
     explicit MainThread(MainWindow *_mainWindow, QObject *parent = nullptr);

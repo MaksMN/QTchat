@@ -14,16 +14,16 @@ private:
     void ConsoleWrite(const QString &line);
     bool waitFlag = true;
 
-    QJsonObject registerUser(QJsonObject json);
-    QJsonObject authUser(QJsonObject json);
-    QJsonObject getUsers(QJsonObject json);
+    QJsonDocument registerUser(QJsonDocument json);
+    QJsonDocument authUser(QJsonDocument json);
+    QJsonDocument getUsers(QJsonDocument json);
 
 public:
     MainThread *mainThread = nullptr;
     explicit Server(QThread *parent = nullptr);
 
     void serverSocket();
-    QJsonObject serverHandle(QJsonObject json);
+    QJsonDocument serverHandle(QJsonDocument json);
 
     void run() override;
     void stop();

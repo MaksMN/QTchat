@@ -12,40 +12,40 @@ void Server::ConsoleWrite(const QString &line)
                               Q_ARG(QString, line));
 }
 
-QJsonObject Server::registerUser(QJsonObject json)
+QJsonDocument Server::registerUser(QJsonDocument json)
 {
     std::shared_ptr<chat::User> user = std::make_shared<chat::User>();
-    user->deserialiseJson(json);
+    user->deserialiseJson(json.object());
 
-    QJsonObject result;
+    QJsonDocument result;
     QMetaObject::invokeMethod(mainThread,
                               "registerUser",
                               Qt::BlockingQueuedConnection,
-                              Q_RETURN_ARG(QJsonObject, result),
+                              Q_RETURN_ARG(QJsonDocument, result),
                               Q_ARG(std::shared_ptr<chat::User>, user));
     return result;
 }
 
-QJsonObject Server::authUser(QJsonObject json)
+QJsonDocument Server::authUser(QJsonDocument json)
 {
-    QJsonObject result;
+    QJsonDocument result;
     QMetaObject::invokeMethod(mainThread,
                               "authUser",
                               Qt::BlockingQueuedConnection,
-                              Q_RETURN_ARG(QJsonObject, result),
+                              Q_RETURN_ARG(QJsonDocument, result),
                               Q_ARG(QString, json["login"].toString()),
                               Q_ARG(QString, json["pass"].toString()));
     return result;
 }
 
-QJsonObject Server::getUsers(QJsonObject json)
+QJsonDocument Server::getUsers(QJsonDocument json)
 {
-    QJsonObject result;
+    QJsonDocument result;
     QMetaObject::invokeMethod(mainThread,
                               "getUsers",
                               Qt::BlockingQueuedConnection,
-                              Q_RETURN_ARG(QJsonObject, result),
-                              Q_ARG(QJsonObject, json));
+                              Q_RETURN_ARG(QJsonDocument, result),
+                              Q_ARG(QJsonDocument, json));
     return result;
 }
 
@@ -87,23 +87,22 @@ void Server::serverSocket()
 
             if (!jsonDoc.isNull()) {
                 if (jsonDoc.isObject()) {
-                    QJsonObject jsonObject = jsonDoc.object();
-
                     // обработка входящих данных
-                    jsonObject = serverHandle(jsonObject);
-                    // Отправляем ответ клиенту
-                    QJsonDocument jsonDocument(jsonObject);
+                    QJsonDocument jsonDocument;
+                    jsonDocument = serverHandle(jsonDoc);
+                    // Отправляем ответ клиенту                    
                     QByteArray response = jsonDocument.toJson();
                     udpSocket.writeDatagram(response, senderAddress, senderPort);
                 }
             }
         }
     }
+    udpSocket.close();
 }
 
-QJsonObject Server::serverHandle(QJsonObject json)
+QJsonDocument Server::serverHandle(QJsonDocument json)
 {
-    QJsonObject response;
+    QJsonDocument response;
     if (json["command"].toString() == "register") {
         return registerUser(json);
     }

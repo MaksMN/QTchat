@@ -101,6 +101,9 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="text">
+                   <string>admin</string>
+                  </property>
                   <property name="maxLength">
                    <number>20</number>
                   </property>
@@ -108,6 +111,9 @@
                 </item>
                 <item row="1" column="0">
                  <widget class="QLineEdit" name="loginPass">
+                  <property name="text">
+                   <string>1234</string>
+                  </property>
                   <property name="maxLength">
                    <number>20</number>
                   </property>

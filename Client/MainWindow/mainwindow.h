@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include "commands.h"
+#include "messagescontainer.h"
 #include "user.h"
+#include "userscontainer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,9 +29,15 @@ public:
     int getTopUserItem();
     int getTopMessageItem();
 
+public slots:
+    void updateUsers(QVector<std::shared_ptr<chat::User>> users);
+    void updateMessages(QVector<std::shared_ptr<chat::Message>> messages);
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<chat::User> user = nullptr;
+    UsersContainer *_users{};
+    MessagesContainer *_messages{};
 
 signals:
     void mainWindowClosed();

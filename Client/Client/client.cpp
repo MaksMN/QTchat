@@ -1,62 +1,61 @@
 #include "client.h"
 #include <QEventLoop>
+#include <QJsonArray>
 #include <QTimer>
-#include "commands.h"
 #include "mainwindow.h"
 
-void Client::clientSocket()
-{
-    QByteArray message = "Hello, server!";
-
-    udpSocket.writeDatagram(message, serverAddress, serverPort);
-
-    // Чтение сообщений от UDP-сервера
-
-    while (socketWait && udpSocket.hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize(udpSocket.pendingDatagramSize());
-        udpSocket.readDatagram(datagram.data(), datagram.size());
-
-        // Обработка полученного сообщения
-        qDebug() << "Received message from server:" << datagram;
-    }
-}
 void Client::Update()
 {
+    if (!socketWait)
+        return;
     int offset = mainWindow->getTopUserItem() + 1;
     QJsonObject request;
     request["command"] = "getUsers";
     request["TopUserItem"] = offset;
-    QJsonObject response = send(request);
+    QJsonDocument jsonDoc(request);
+    QJsonDocument response = send(jsonDoc, 3);
+
+    QVector<std::shared_ptr<chat::User>> users;
+    if (response.isArray()) {
+        auto jsonArray = response.array();
+        for (const QJsonValue &value : jsonArray) {
+            std::shared_ptr<chat::User> user = std::make_shared<chat::User>();
+            user->deserialiseJson(value.toObject());
+            users.push_back(user);
+        }
+    }
+    QMetaObject::invokeMethod(mainWindow,
+                              "updateUsers",
+                              Qt::QueuedConnection,
+                              Q_ARG(QVector<std::shared_ptr<chat::User>>, users));
 }
-QJsonObject Client::send(QJsonObject json, int timeout)
+QJsonDocument Client::send(QJsonDocument json, int timeout)
 {
-    QJsonObject jsonObject;
-    QJsonDocument jsonDocument(json);
-    QByteArray message = jsonDocument.toJson();
+    QByteArray message = json.toJson();
+    QUdpSocket udpSocket;
     udpSocket.writeDatagram(message, serverAddress, serverPort);
+
     auto start = std::chrono::steady_clock::now();
     int elapsedSeconds = 0;
+
     while (socketWait) {
         if (udpSocket.hasPendingDatagrams()) {
             QByteArray datagram;
             datagram.resize(udpSocket.pendingDatagramSize());
             udpSocket.readDatagram(datagram.data(), datagram.size());
+
             if (datagram.size() == 0)
                 continue;
+
             QJsonParseError error;
             QJsonDocument jsonDoc = QJsonDocument::fromJson(datagram, &error);
             if (error.error != QJsonParseError::NoError)
                 continue;
             if (!jsonDoc.isNull()) {
-                if (jsonDoc.isObject()) {
-                    QJsonObject jsonObject = jsonDoc.object();
-
-                    return jsonObject;
+                if (!jsonDoc.isEmpty()) {
+                    return jsonDoc;
                 }
             }
-            // Обработка полученного сообщения
-            qDebug() << "Received message from server:" << datagram;
         }
         if (timeout > 0) {
             auto current = std::chrono::steady_clock::now();
@@ -65,13 +64,17 @@ QJsonObject Client::send(QJsonObject json, int timeout)
             if (elapsedSeconds >= timeout) {
                 QJsonObject jsonObject;
                 jsonObject["response"] = "timeout";
-                return jsonObject;
+                QJsonDocument jsonDoc(jsonObject);
+                return jsonDoc;
                 break;
             }
         }
     }
+    udpSocket.close();
+    QJsonObject jsonObject;
     jsonObject["response"] = "fail";
-    return jsonObject;
+    QJsonDocument jsonDoc(jsonObject);
+    return jsonDoc;
 }
 void Client::close()
 {
@@ -92,8 +95,10 @@ void Client::run()
     timer.setSingleShot(false); // Установите в true, если нужен однократный запуск таймера
 
     QObject::connect(&timer, &QTimer::timeout, [&]() {
-        if (!socketWait)
+        if (!socketWait) {
             timer.stop();
+            return;
+        }
 
         Update();
     });

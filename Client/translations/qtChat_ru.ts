@@ -4,66 +4,74 @@
 <context>
     <name>Auth</name>
     <message>
-        <location filename="../Auth/auth.ui" line="31"/>
-        <location filename="../Auth/auth.ui" line="50"/>
-        <location filename="../Auth/auth.ui" line="129"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="233"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="236"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="240"/>
+        <location filename="../Auth/auth.ui" line="52"/>
+        <location filename="../Auth/auth.ui" line="79"/>
+        <location filename="../Auth/auth.ui" line="144"/>
+        <location filename="../Auth/auth.ui" line="195"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="275"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="279"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="280"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="284"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Auth/auth.ui" line="89"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="243"/>
-        <source>Register</source>
+        <location filename="../Auth/auth.ui" line="86"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="276"/>
+        <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Auth/auth.ui" line="108"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="237"/>
-        <source>First name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Auth/auth.ui" line="17"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="232"/>
-        <source>Auth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Auth/auth.ui" line="57"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="234"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Auth/auth.ui" line="78"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="235"/>
-        <source>PushButton</source>
+        <location filename="../Auth/auth.ui" line="105"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="277"/>
+        <source>admin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="115"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="238"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="278"/>
+        <source>1234</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Auth/auth.ui" line="155"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="287"/>
+        <source>Register</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Auth/auth.ui" line="174"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="281"/>
+        <source>First name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Auth/auth.ui" line="35"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="274"/>
+        <source>Auth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Auth/auth.ui" line="181"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="282"/>
         <source>Last name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Auth/auth.ui" line="122"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="239"/>
+        <location filename="../Auth/auth.ui" line="188"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="283"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Auth/auth.ui" line="136"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="241"/>
+        <location filename="../Auth/auth.ui" line="202"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="285"/>
         <source>Pass</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Auth/auth.ui" line="166"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="242"/>
+        <location filename="../Auth/auth.ui" line="252"/>
+        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="286"/>
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
@@ -145,131 +153,141 @@
     <name>QObject</name>
     <message>
         <location filename="../Strings/strings.cpp" line="4"/>
-        <source>Email busy</source>
+        <source>User banned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="5"/>
-        <source>Login busy</source>
+        <source>Unsuccessful. Invalid username or password.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="6"/>
-        <source>Unknown reason</source>
+        <source>Email busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="7"/>
-        <source>Connection to server...</source>
+        <source>Login busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="8"/>
-        <source>Unknown error</source>
+        <source>Unknown reason</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="9"/>
-        <source>No server response</source>
+        <source>Connection to server...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="10"/>
-        <source>All fields must be filled in</source>
+        <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="11"/>
-        <source>The server will use the default settings</source>
+        <source>No server response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="12"/>
-        <source>Message not selected</source>
+        <source>All fields must be filled in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="13"/>
-        <source>Failed to disconnect the user</source>
+        <source>The server will use the default settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="14"/>
-        <source>User session is disabled</source>
+        <source>Message not selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="15"/>
-        <source>Ban</source>
+        <source>Failed to disconnect the user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="16"/>
-        <source>Unban</source>
+        <source>User session is disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="17"/>
-        <source>Not applicable for service users</source>
+        <source>Ban</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="18"/>
-        <source>Cannot delete service users</source>
+        <source>Unban</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="19"/>
-        <source>User not selected</source>
+        <source>Not applicable for service users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="20"/>
-        <source>Database query error</source>
+        <source>Cannot delete service users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="21"/>
-        <source>Database error</source>
+        <source>User not selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="22"/>
-        <source>Failed connection to the database</source>
+        <source>Database query error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="23"/>
-        <source>Connection to the database was successful</source>
+        <source>Database error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="24"/>
-        <source>Connecting to the database server...</source>
+        <source>Failed connection to the database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="25"/>
+        <source>Connection to the database was successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="26"/>
-        <source>Settings are saved, restart the server.</source>
+        <source>Connecting to the database server...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="28"/>
+        <source>Settings are saved, restart the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="30"/>
         <source>File server.ini not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="29"/>
+        <location filename="../Strings/strings.cpp" line="31"/>
         <source>Default settings will be used to connect to the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="31"/>
+        <location filename="../Strings/strings.cpp" line="33"/>
         <source>Settings cannot be saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="32"/>
+        <location filename="../Strings/strings.cpp" line="34"/>
         <source>Failed to save settings to ini file</source>
         <translation type="unfinished"></translation>
     </message>

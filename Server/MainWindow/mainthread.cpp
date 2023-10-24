@@ -140,7 +140,7 @@ QVector<std::shared_ptr<chat::User>> MainThread::getUsers(int offset)
     return db.getUsers(QString(), offset);
 }
 
-QJsonObject MainThread::registerUser(std::shared_ptr<chat::User> user)
+QJsonDocument MainThread::registerUser(std::shared_ptr<chat::User> user)
 {
     bool login_busy, email_buzy;
     QJsonObject response;
@@ -165,35 +165,41 @@ QJsonObject MainThread::registerUser(std::shared_ptr<chat::User> user)
             response["response"] = "not_registered";
         }
     }
-    return response;
+    QJsonDocument jsonDoc(response);
+    return jsonDoc;
 }
 
-QJsonObject MainThread::authUser(QString login, QString pass)
+QJsonDocument MainThread::authUser(QString login, QString pass)
 {
     QJsonObject response;
+
     std::shared_ptr<chat::User> user = db.getUserByLogin(login);
 
     if (!user) {
         response["response"] = "fail";
-        return response;
+        QJsonDocument jsonDoc(response);
+        return jsonDoc;
     }
     if (!user->validatePass(pass)) {
         response["response"] = "fail";
-        return response;
+        QJsonDocument jsonDoc(response);
+        return jsonDoc;
     }
     if (user->isBanned()) {
         response["response"] = "banned";
-        return response;
+        QJsonDocument jsonDoc(response);
+        return jsonDoc;
     }
 
     response = user->serialiseJson();
     response["response"] = "logged_in";
     response["pass_hash"] = "0";
     response["pass_salt"] = "0";
-    return response;
+    QJsonDocument jsonDoc(response);
+    return jsonDoc;
 }
 
-QJsonObject MainThread::getUsers(QJsonObject json)
+QJsonDocument MainThread::getUsers(QJsonDocument json)
 {
     int offset = json["TopUserItem"].toInteger();
     auto users = db.getUsers(QString(), offset);
@@ -203,9 +209,8 @@ QJsonObject MainThread::getUsers(QJsonObject json)
     }
 
     QJsonDocument jsonDocument(jsonArray); // Создание JSON-документа из JSON-массива
-    QByteArray jsonString = jsonDocument.toJson(); // Преобразование JSON-документа в строку
 
-    return QJsonObject();
+    return jsonDocument;
 }
 
 MainThread::MainThread(MainWindow *mainWindow, Server *server, QObject *parent)
