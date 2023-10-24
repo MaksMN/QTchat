@@ -1,6 +1,8 @@
 #ifndef USER_H
 #define USER_H
 #include <QDateTime>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QObject>
 #include "ChatStructs_global.h"
 #include "SHA1.h"
@@ -134,6 +136,9 @@ public:
     QString pass_salt() const;
 
     QString regDateTime();
+
+    QJsonObject serialiseJson() const;
+    void deserialiseJson(const QJsonObject &jsonObject);
 };
 } // namespace chat
 #endif // USER_H

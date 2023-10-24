@@ -13,6 +13,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS LinguistTools)
 find_package(Qt6 COMPONENTS Sql REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 
 ###### Перевод #####
 set(TS_FILES
@@ -69,6 +70,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         app.h app.cpp
         MainWindow/userscontainer.h MainWindow/userscontainer.cpp
         MainWindow/messagescontainer.h MainWindow/messagescontainer.cpp
+        Server/server.h Server/server.cpp
+
 
 
 
@@ -92,7 +95,10 @@ else()
 endif()
 endif()
 
-target_link_libraries(Server PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(
+    Server PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Network
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -140,8 +146,21 @@ link_directories(../ChatStructs/lib/${BUILD_PREFIX})
 target_link_libraries(Server PRIVATE ChatStructs)
 #####################################
 
+####### Add library Network ######
+#file(GLOB_RECURSE NETWORK_LIB "../Network/lib/${BUILD_PREFIX}/*.*")
+## Copy the Network library files to the project build folder.
+#foreach(Network_lib_file ${NETWORK_LIB})
+#    get_filename_component(header_name ${Network_lib_file} NAME)
+#    configure_file(${Network_lib_file} ${CMAKE_BINARY_DIR} COPYONLY)
+#endforeach()
+
+#include_directories(../Network/include)
+#link_directories(../Network/lib/${BUILD_PREFIX})
+#target_link_libraries(Server PRIVATE Network)
+######################################
+
 ###### includes ######
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ../Misc Strings DB MainWindow ServerSettings Console)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ../Misc Strings DB MainWindow ServerSettings Console Server)
 
 
 ######## server.ini ########

@@ -95,91 +95,96 @@
     <name>QObject</name>
     <message>
         <location filename="../Strings/strings.cpp" line="4"/>
-        <source>Message not selected</source>
+        <source>The server will use the default settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="5"/>
-        <source>Failed to disconnect the user</source>
+        <source>Message not selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="6"/>
-        <source>User session is disabled</source>
+        <source>Failed to disconnect the user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="7"/>
+        <source>User session is disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="8"/>
         <source>Ban</source>
         <translation type="unfinished">Бан</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="8"/>
+        <location filename="../Strings/strings.cpp" line="9"/>
         <source>Unban</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="9"/>
+        <location filename="../Strings/strings.cpp" line="10"/>
         <source>Not applicable for service users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="10"/>
+        <location filename="../Strings/strings.cpp" line="11"/>
         <source>Cannot delete service users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="11"/>
+        <location filename="../Strings/strings.cpp" line="12"/>
         <source>User not selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="12"/>
+        <location filename="../Strings/strings.cpp" line="13"/>
         <source>Database query error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="13"/>
+        <location filename="../Strings/strings.cpp" line="14"/>
         <source>Database error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="14"/>
+        <location filename="../Strings/strings.cpp" line="15"/>
         <source>Failed connection to the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="15"/>
+        <location filename="../Strings/strings.cpp" line="16"/>
         <source>Connection to the database was successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="16"/>
+        <location filename="../Strings/strings.cpp" line="17"/>
         <source>Connecting to the database server...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="18"/>
+        <location filename="../Strings/strings.cpp" line="19"/>
         <source>Settings are saved, restart the server.</source>
         <translation>Настройки сохранены, перезапустите сервер.</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="20"/>
+        <location filename="../Strings/strings.cpp" line="21"/>
         <source>File server.ini not found</source>
         <translation>Не найден файл server.ini</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="21"/>
+        <location filename="../Strings/strings.cpp" line="22"/>
         <source>Default settings will be used to connect to the database</source>
         <translation>Для подключения к базе данных будут использованы настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="23"/>
+        <location filename="../Strings/strings.cpp" line="24"/>
         <source>Settings cannot be saved</source>
         <translation>Настройки не могут быть сохранены</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="24"/>
+        <location filename="../Strings/strings.cpp" line="25"/>
         <source>Failed to save settings to ini file</source>
         <translation>Не удалось сохранить настройки в ini-файл</translation>
     </message>

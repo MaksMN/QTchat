@@ -1,6 +1,7 @@
 #include "strings.h"
 
 /*Strings*/
+const QString Strings::SERVER_USE_THE_SETTINGS = QObject::tr("The server will use the default settings");
 const QString Strings::MESSAGE_NOT_SELECTED = QObject::tr("Message not selected");
 const QString Strings::FAILED_TO_DISCONNECT_THE_USER = QObject::tr("Failed to disconnect the user");
 const QString Strings::USER_SESSION_IS_DISABLED = QObject::tr("User session is disabled");

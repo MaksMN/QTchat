@@ -74,6 +74,9 @@ void MainThread::handleMainWindowClosed()
     qDebug("stop");
     updated = false;
     mainWindow->setVisible(false);
+    server->stop();
+    server->quit();
+    server->wait();
     this->quit();
     this->wait();
 }
@@ -125,4 +128,51 @@ void MainThread::hideMessage(qlonglong id)
     else
         msg->hide();
     db.updateMessage(msg);
+}
+
+void MainThread::consoleWrite(const QString &line)
+{
+    ConsoleWrite(line);
+}
+
+QVector<std::shared_ptr<chat::User>> MainThread::getUsers(int offset)
+{
+    return db.getUsers(QString(), offset);
+}
+
+QJsonObject MainThread::registerUser(std::shared_ptr<chat::User> user)
+{
+    bool login_busy, email_buzy;
+    QJsonObject response;
+    bool res = db.createUser(user, login_busy, email_buzy);
+    if (res) {
+        user = db.getUserByLogin(user->login());
+        response = user->serialiseJson();
+        response["response"] = "registered";
+        response["pass_hash"] = "0";
+        response["pass_salt"] = "0";
+
+    } else {
+        QString busy;
+        if (login_busy || email_buzy) {
+            if (login_busy)
+                busy += "Login busy. ";
+            if (email_buzy)
+                busy += "Email busy. ";
+            response["response"] = "busy";
+            response["message"] = busy;
+        } else {
+            response["response"] = "not_registered";
+        }
+    }
+    return response;
+}
+
+MainThread::MainThread(MainWindow *mainWindow, Server *server, QObject *parent)
+    : QThread(parent)
+    , mainWindow(mainWindow)
+    , server(server)
+{
+    mainWindow->mainThread = this;
+    server->mainThread = this;
 }

@@ -7,6 +7,7 @@
 #include "app.h"
 #include "db.h"
 #include "mainwindow.h"
+#include "server.h"
 #include <memory>
 
 class MainThread : public QThread, APP
@@ -14,6 +15,7 @@ class MainThread : public QThread, APP
     Q_OBJECT
 private:
     MainWindow *mainWindow;
+    Server *server = nullptr;
     DB db{this};
     bool updated = true;
     QMutex mutex;
@@ -21,15 +23,18 @@ signals:
     void mainWindowClosed();
 public slots:
     void handleMainWindowClosed();
-
     void deleteUserByID(qlonglong id);
     void banUserByID(qlonglong id);
     void unloginUserByID(qlonglong id);
     void deleteMessage(qlonglong id);
     void hideMessage(qlonglong id);
+    void consoleWrite(const QString &line);
+    QVector<std::shared_ptr<chat::User>> getUsers(int offset);
+    QJsonObject registerUser(std::shared_ptr<chat::User> user);
 
 public:
     explicit MainThread(MainWindow *_mainWindow, QObject *parent = nullptr);
+    MainThread(MainWindow *mainWindow, Server *server, QObject *parent = nullptr);
 
     void run() override;
     void ConsoleWrite(const QString &line) override;

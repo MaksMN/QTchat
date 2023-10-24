@@ -13,6 +13,7 @@ class Strings : public QObject
 private:
 public:
     /*Strings*/
+	static const QString SERVER_USE_THE_SETTINGS;
 	static const QString MESSAGE_NOT_SELECTED;
 	static const QString FAILED_TO_DISCONNECT_THE_USER;
 	static const QString USER_SESSION_IS_DISABLED;

@@ -186,6 +186,36 @@ QString User::regDateTime()
     return Misc::stampTotime(_registered);
 }
 
+QJsonObject User::serialiseJson() const
+{
+    QJsonObject jsonObject;
+    jsonObject["id"] = _id;
+    jsonObject["login"] = _login;
+    jsonObject["email"] = _email;
+    jsonObject["first_name"] = _first_name;
+    jsonObject["last_name"] = _last_name;
+    jsonObject["registered"] = _registered;
+    jsonObject["status"] = (int) _status;
+    jsonObject["session_key"] = _session_key;
+    jsonObject["pass_hash"] = _pass_hash;
+    jsonObject["pass_salt"] = _pass_salt;
+    return jsonObject;
+}
+
+void User::deserialiseJson(const QJsonObject &jsonObject)
+{
+    _id = jsonObject["id"].toInteger(0);
+    _login = jsonObject["login"].toString();
+    _email = jsonObject["email"].toString();
+    _first_name = jsonObject["first_name"].toString();
+    _last_name = jsonObject["last_name"].toString();
+    _registered = jsonObject["registered"].toInteger();
+    _status = (user::status) jsonObject["status"].toInt();
+    _session_key = jsonObject["session_key"].toInteger();
+    _pass_hash = jsonObject["pass_hash"].toString();
+    _pass_salt = jsonObject["pass_salt"].toString();
+}
+
 User::User(const QString &login,
            const QString &email,
            const QString &first_name,
