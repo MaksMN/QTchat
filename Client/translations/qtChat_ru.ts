@@ -12,54 +12,66 @@
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="279"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="280"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="284"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="275"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="279"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="280"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="284"/>
         <source>Login</source>
         <translation>Логин</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="86"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="276"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="276"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="155"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="287"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="287"/>
         <source>Register</source>
         <translation>Регистрация</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="174"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="281"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="281"/>
         <source>First name</source>
         <translation>Имя</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="35"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="274"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="274"/>
         <source>Auth</source>
         <translation>Авторизация</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="181"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="282"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="282"/>
         <source>Last name</source>
         <translation>Фамилия</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="188"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="283"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="283"/>
         <source>Email</source>
         <translation>Email</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="202"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="285"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="285"/>
         <source>Pass</source>
         <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="252"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="286"/>
+        <location filename="../build/release/Client_autogen/include/ui_auth.h" line="286"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
@@ -69,78 +81,65 @@
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="14"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="207"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="202"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="207"/>
         <source>qtChat - Server</source>
         <translation>qtChat - Клиент</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="71"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="210"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="205"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="210"/>
         <source>Users</source>
         <translation>Пользователи</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="81"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="211"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="211"/>
         <source>Public chat</source>
         <translation>Общий чат</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="116"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="212"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="206"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="212"/>
         <source>Messages</source>
         <translation>Сообщения</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="216"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="209"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="209"/>
         <source>Exit</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="207"/>
-        <source>User</source>
-        <translation>Пользователи</translation>
-    </message>
-    <message>
         <location filename="../MainWindow/mainwindow.ui" line="161"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="214"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="208"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="214"/>
         <source>Text:</source>
         <translation>Текст:</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="171"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="215"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="209"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="215"/>
         <source>Send</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="210"/>
-        <source>Status:</source>
-        <translation>Статус:</translation>
-    </message>
-    <message>
         <location filename="../MainWindow/mainwindow.ui" line="198"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="217"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="211"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="217"/>
         <source>Main</source>
         <translation>Меню</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="211"/>
         <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="208"/>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="203"/>
+        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="208"/>
         <source>Shut Down</source>
         <translation>Закрыть программу</translation>
-    </message>
-    <message>
-        <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="204"/>
-        <source>Server Settings</source>
-        <translation>Настройки сервера</translation>
     </message>
 </context>
 <context>
