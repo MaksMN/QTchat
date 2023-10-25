@@ -63,8 +63,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ../Misc/misc.cpp ../Misc/misc.h
         MainWindow/userscontainer.h MainWindow/userscontainer.cpp
         MainWindow/messagescontainer.cpp MainWindow/messagescontainer.h
-
-
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Client APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

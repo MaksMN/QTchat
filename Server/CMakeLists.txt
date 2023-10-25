@@ -71,10 +71,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MainWindow/userscontainer.h MainWindow/userscontainer.cpp
         MainWindow/messagescontainer.h MainWindow/messagescontainer.cpp
         Server/server.h Server/server.cpp
-
-
-
-
     )
 
 # Define target properties for Android with Qt 6 as:
