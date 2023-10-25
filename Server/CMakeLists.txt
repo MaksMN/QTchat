@@ -61,7 +61,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${APP_ICON_RESOURCE_WINDOWS}
         resources.qrc
         ../Misc/circularqueue.h
-        readme.md
+
         ServerSettings/serversettings.h ServerSettings/serversettings.cpp ServerSettings/serversettings.ui
         Console/console.h Console/console.cpp
         server.ini
