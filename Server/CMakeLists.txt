@@ -64,8 +64,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
         ServerSettings/serversettings.h ServerSettings/serversettings.cpp ServerSettings/serversettings.ui
         Console/console.h Console/console.cpp
-        server.ini
-        build/debug/server.ini
         MainWindow/mainthread.h MainWindow/mainthread.cpp
         app.h app.cpp
         MainWindow/userscontainer.h MainWindow/userscontainer.cpp

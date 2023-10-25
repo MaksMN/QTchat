@@ -54,7 +54,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         resources.qrc
         resources.rc
         ${APP_ICON_RESOURCE_WINDOWS}
-        server.ini
 
         Strings/strings.h Strings/strings.cpp
         Client/client.h Client/client.cpp
