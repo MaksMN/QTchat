@@ -13,6 +13,11 @@ class Strings : public QObject
 private:
 public:
     /*Strings*/
+	static const QString MESSAGE_HAS_BEEN_SENT;
+	static const QString FAILED_TO_SEND_MESSAGE;
+	static const QString YOU_HAVE_TO_ENTER_THE_TEXT;
+	static const QString SESSION_TERMINATED_BY_SERVER;
+	static const QString FORBIDDEN_PERSONAL_MESSAGES_YOURSELF;
 	static const QString USER_BANNED;
 	static const QString INVALID_USERNAME_OR_PASSWORD;
 	static const QString EMAIL_BUSY;

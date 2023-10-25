@@ -1,4 +1,4 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-enum Commands { not_registered, update_lists, send_message };
+enum Commands { public_chat, private_chat };
 #endif // COMMANDS_H

@@ -35,7 +35,7 @@ public:
     std::shared_ptr<chat::User> getUserByID(qlonglong &&id);
     void deleteUserByID(qlonglong &id);
     QVector<std::shared_ptr<chat::User>> getUsers(const QString &keyword = QString(),
-                                                  quint32 offset = 0,
+                                                  quint32 offset = 1,
                                                   quint32 limit = 100);
     /// Добавляет нового пользователя в БД
     bool createUser(std::shared_ptr<chat::User> user, bool &login_busy, bool &email_busy);

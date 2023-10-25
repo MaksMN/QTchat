@@ -101,8 +101,9 @@ QVector<std::shared_ptr<chat::User>> DB::getUsers(const QString &keyword,
     else
         query_str += "ORDER BY id ASC ";
 
-    if (offset > 0)
-        query_str += "OFFSET :offset ";
+    if (offset < 1)
+        offset = 1;
+    query_str += "OFFSET :offset ";
 
     query_str += "LIMIT :limit";
 
@@ -237,7 +238,7 @@ QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint
                         "ORDER BY pub_messages.published ASC";
 
     if (offset > 0)
-        query_str += " OFFSET :offset" + QString::number(offset);
+        query_str += " OFFSET :offset";
 
     query_str += " LIMIT :limit";
 
@@ -258,6 +259,7 @@ QVector<std::shared_ptr<chat::Message>> DB::getPubMessages(quint32 offset, quint
     if (query.numRowsAffected() > 0) {
         while (query.next()) {
             auto message = getMessage(query);
+            //message->setAuthor(getUserByID(message->author_id()));
             messages.push_back(message);
         }
     }
@@ -396,7 +398,7 @@ QVector<std::shared_ptr<chat::Message>> DB::getPrivateMessages(qlonglong reader_
                         "ORDER BY pm.published ASC";
 
     if (offset > 0)
-        query_str += " OFFSET :offset" + QString::number(offset);
+        query_str += " OFFSET :offset";
 
     query_str += " LIMIT :limit";
 

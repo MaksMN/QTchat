@@ -4,9 +4,9 @@
 #include "ui_auth.h"
 #include "user.h"
 
-Auth::Auth(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Auth)
+Auth::Auth(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::Auth)
 {
     ui->setupUi(this);
 }
@@ -45,7 +45,7 @@ void Auth::on_regButton_clicked()
 
     ui->labelMsg->setText(Strings::t(Strings::CONNECTION_TO_SERVER));
     QJsonDocument jsonDoc(jsonUser);
-    auto res = client.send(jsonDoc, 5);
+    auto res = client.send(jsonDoc, 5, false);
 
     QJsonObject response = res.object();
 
@@ -91,9 +91,10 @@ void Auth::on_loginButton_clicked()
     request["command"] = "auth";
     request["login"] = ui->loginLogin->text();
     request["pass"] = ui->loginPass->text();
+    request["session_key"] = Misc::randomKey();
 
     QJsonDocument jsonDoc(request);
-    auto res = client.send(jsonDoc, 5);
+    auto res = client.send(jsonDoc, 5, false);
     QJsonObject response = res.object();
 
     if (response["response"].toString() == "fail") {
@@ -122,4 +123,9 @@ void Auth::on_loginButton_clicked()
 bool Auth::authorized() const
 {
     return _authorized;
+}
+
+void Auth::setLabelMsgText(QString &text)
+{
+    ui->labelMsg->setText(text);
 }

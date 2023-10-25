@@ -13,283 +13,302 @@
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="280"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="284"/>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Логин</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="86"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="276"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Auth/auth.ui" line="105"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="277"/>
-        <source>admin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Auth/auth.ui" line="115"/>
-        <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="278"/>
-        <source>1234</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="155"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="287"/>
         <source>Register</source>
-        <translation type="unfinished"></translation>
+        <translation>Регистрация</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="174"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="281"/>
         <source>First name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="35"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="274"/>
         <source>Auth</source>
-        <translation type="unfinished"></translation>
+        <translation>Авторизация</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="181"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="282"/>
         <source>Last name</source>
-        <translation type="unfinished"></translation>
+        <translation>Фамилия</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="188"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="283"/>
         <source>Email</source>
-        <translation type="unfinished"></translation>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="202"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="285"/>
         <source>Pass</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../Auth/auth.ui" line="252"/>
         <location filename="../build/debug/Client_autogen/include/ui_auth.h" line="286"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="14"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="202"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="207"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="202"/>
         <source>qtChat - Server</source>
-        <translation type="unfinished"></translation>
+        <translation>qtChat - Клиент</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="71"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="205"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="210"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="205"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователи</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="109"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="206"/>
+        <location filename="../MainWindow/mainwindow.ui" line="81"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="211"/>
+        <source>Public chat</source>
+        <translation>Общий чат</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow/mainwindow.ui" line="116"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="212"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="206"/>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщения</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="126"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="207"/>
+        <location filename="../MainWindow/mainwindow.ui" line="216"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="209"/>
+        <source>Exit</source>
+        <translation>Выйти</translation>
+    </message>
+    <message>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="207"/>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователи</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="154"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="208"/>
+        <location filename="../MainWindow/mainwindow.ui" line="161"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="214"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="208"/>
         <source>Text:</source>
-        <translation type="unfinished"></translation>
+        <translation>Текст:</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="164"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="209"/>
+        <location filename="../MainWindow/mainwindow.ui" line="171"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="215"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="209"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="174"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="210"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="210"/>
         <source>Status:</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус:</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="191"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="211"/>
+        <location filename="../MainWindow/mainwindow.ui" line="198"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="217"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="211"/>
         <source>Main</source>
-        <translation type="unfinished"></translation>
+        <translation>Меню</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="204"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="203"/>
+        <location filename="../MainWindow/mainwindow.ui" line="211"/>
+        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="208"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="203"/>
         <source>Shut Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть программу</translation>
     </message>
     <message>
-        <location filename="../MainWindow/mainwindow.ui" line="212"/>
-        <location filename="../build/debug/Client_autogen/include/ui_mainwindow.h" line="204"/>
         <location filename="../build/release/Client_autogen/include/ui_mainwindow.h" line="204"/>
         <source>Server Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки сервера</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <location filename="../Strings/strings.cpp" line="4"/>
-        <source>User banned</source>
-        <translation type="unfinished"></translation>
+        <source>Message has been sent</source>
+        <translation>Сообщение отправлено</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="5"/>
-        <source>Unsuccessful. Invalid username or password.</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to send message</source>
+        <translation>Не удалось отправить сообщение</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="6"/>
-        <source>Email busy</source>
-        <translation type="unfinished"></translation>
+        <source>You have to enter the text</source>
+        <translation>Необходимо ввести текст</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="7"/>
-        <source>Login busy</source>
-        <translation type="unfinished"></translation>
+        <source>The session is terminated by the server</source>
+        <translation>Сессия завершена сервером</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="8"/>
-        <source>Unknown reason</source>
-        <translation type="unfinished"></translation>
+        <source>It is forbidden to have personal conversations with yourself</source>
+        <translation>Запрещается вести личные разговоры с самим собой</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="9"/>
-        <source>Connection to server...</source>
-        <translation type="unfinished"></translation>
+        <source>User banned</source>
+        <translation>Пользователь заблокирован</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="10"/>
-        <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <source>Unsuccessful. Invalid username or password.</source>
+        <translation>Неудачно. Неверное имя пользователя или пароль.</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="11"/>
-        <source>No server response</source>
-        <translation type="unfinished"></translation>
+        <source>Email busy</source>
+        <translation>Email занят</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="12"/>
-        <source>All fields must be filled in</source>
-        <translation type="unfinished"></translation>
+        <source>Login busy</source>
+        <translation>Логин занят</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="13"/>
-        <source>The server will use the default settings</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown reason</source>
+        <translation>Неизвестная причина</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="14"/>
-        <source>Message not selected</source>
-        <translation type="unfinished"></translation>
+        <source>Connection to server...</source>
+        <translation>Соединение с сервером...</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="15"/>
-        <source>Failed to disconnect the user</source>
-        <translation type="unfinished"></translation>
+        <source>Unknown error</source>
+        <translation>Неизвестная ошибка</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="16"/>
-        <source>User session is disabled</source>
-        <translation type="unfinished"></translation>
+        <source>No server response</source>
+        <translation>Нет ответа сервера</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="17"/>
-        <source>Ban</source>
-        <translation type="unfinished"></translation>
+        <source>All fields must be filled in</source>
+        <translation>Все поля должны быть заполнены</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="18"/>
-        <source>Unban</source>
-        <translation type="unfinished"></translation>
+        <source>The server will use the default settings</source>
+        <translation>Сервер будет использовать настройки по умолчанию</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="19"/>
-        <source>Not applicable for service users</source>
-        <translation type="unfinished"></translation>
+        <source>Message not selected</source>
+        <translation>Сообщение не выбрано</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="20"/>
-        <source>Cannot delete service users</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to disconnect the user</source>
+        <translation>Не удалось отключить пользователя</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="21"/>
-        <source>User not selected</source>
-        <translation type="unfinished"></translation>
+        <source>User session is disabled</source>
+        <translation>Сеанс пользователя отключен</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="22"/>
-        <source>Database query error</source>
-        <translation type="unfinished"></translation>
+        <source>Ban</source>
+        <translation>Бан</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="23"/>
-        <source>Database error</source>
-        <translation type="unfinished"></translation>
+        <source>Unban</source>
+        <translation>Разбан</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="24"/>
-        <source>Failed connection to the database</source>
-        <translation type="unfinished"></translation>
+        <source>Not applicable for service users</source>
+        <translation>Не применимо для сервисных пользователей</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="25"/>
-        <source>Connection to the database was successful</source>
-        <translation type="unfinished"></translation>
+        <source>Cannot delete service users</source>
+        <translation>Нельзя удалить сервисного пользователя</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="26"/>
-        <source>Connecting to the database server...</source>
-        <translation type="unfinished"></translation>
+        <source>User not selected</source>
+        <translation>Пользователь не выбран</translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="27"/>
+        <source>Database query error</source>
+        <translation>Ошибка запроса к базе данных</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="28"/>
-        <source>Settings are saved, restart the server.</source>
-        <translation type="unfinished"></translation>
+        <source>Database error</source>
+        <translation>Ошибка базы данных</translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="29"/>
+        <source>Failed connection to the database</source>
+        <translation>Не удалось установить соединение с базой данных</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="30"/>
-        <source>File server.ini not found</source>
-        <translation type="unfinished"></translation>
+        <source>Connection to the database was successful</source>
+        <translation>Подключение к базе данных выполнено успешно</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="31"/>
-        <source>Default settings will be used to connect to the database</source>
-        <translation type="unfinished"></translation>
+        <source>Connecting to the database server...</source>
+        <translation>Подключение к серверу базы данных...</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="33"/>
-        <source>Settings cannot be saved</source>
-        <translation type="unfinished"></translation>
+        <source>Settings are saved, restart the server.</source>
+        <translation>Настройки сохранены, перезапустите сервер.</translation>
     </message>
     <message>
-        <location filename="../Strings/strings.cpp" line="34"/>
+        <location filename="../Strings/strings.cpp" line="35"/>
+        <source>File server.ini not found</source>
+        <translation>Файл server.ini не найден</translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="36"/>
+        <source>Default settings will be used to connect to the database</source>
+        <translation>Для подключения к базе данных будут использоваться настройки по умолчанию</translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="38"/>
+        <source>Settings cannot be saved</source>
+        <translation>Настройки не могут быть сохранены</translation>
+    </message>
+    <message>
+        <location filename="../Strings/strings.cpp" line="39"/>
         <source>Failed to save settings to ini file</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить настройки в ini-файле</translation>
     </message>
 </context>
 </TS>

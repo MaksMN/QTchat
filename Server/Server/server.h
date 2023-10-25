@@ -17,6 +17,9 @@ private:
     QJsonDocument registerUser(QJsonDocument json);
     QJsonDocument authUser(QJsonDocument json);
     QJsonDocument getUsers(QJsonDocument json);
+    QJsonDocument getPubMessages(QJsonDocument json);
+    QJsonDocument getPrivateMessages(QJsonDocument json);
+    QJsonDocument sendMessage(QJsonDocument json);
 
 public:
     MainThread *mainThread = nullptr;

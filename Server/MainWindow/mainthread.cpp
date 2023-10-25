@@ -1,6 +1,7 @@
 #include "mainthread.h"
 #include <QDebug>
 #include <QScrollBar>
+
 #include "strings.h"
 
 MainThread::MainThread(MainWindow *_mainWindow, QObject *parent)
@@ -62,10 +63,19 @@ void MainThread::UpdateMessages(QVector<std::shared_ptr<chat::Message>> messages
 
 void MainThread::Updater()
 {
-    int offset = mainWindow->getTopUserItem() + 1;
+    int offset;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getTopUserItem",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(int, offset));
+
     auto users = db.getUsers(QString(), offset, 100);
     UpdateUsers(users);
-    offset = mainWindow->getTopMessageItem();
+
+    QMetaObject::invokeMethod(mainWindow,
+                              "getTopMessageItem",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(int, offset));
     auto messages = db.getPubMessages(offset, 100);
     UpdateMessages(messages);
 }
@@ -190,7 +200,8 @@ QJsonDocument MainThread::authUser(QString login, QString pass)
         QJsonDocument jsonDoc(response);
         return jsonDoc;
     }
-
+    user->setSessionKey(Misc::randomKey());
+    db.updateUser(user, "session_key", user->session_key());
     response = user->serialiseJson();
     response["response"] = "logged_in";
     response["pass_hash"] = "0";
@@ -211,6 +222,67 @@ QJsonDocument MainThread::getUsers(QJsonDocument json)
     QJsonDocument jsonDocument(jsonArray); // Создание JSON-документа из JSON-массива
 
     return jsonDocument;
+}
+
+QJsonDocument MainThread::getPubMessages(QJsonDocument json)
+{
+    int offset = json["TopMessageItem"].toInteger();
+    auto messages = db.getPubMessages(offset);
+    QJsonArray jsonArray;
+    for (int i = 0; i < messages.size(); i++) {
+        jsonArray.append(messages[i]->serialiseJson().array());
+    }
+
+    QJsonDocument jsonDocument(jsonArray); // Создание JSON-документа из JSON-массива
+
+    return jsonDocument;
+}
+
+QJsonDocument MainThread::getPrivateMessages(QJsonDocument json)
+{
+    int offset = json["TopMessageItem"].toInteger();
+    qlonglong reader_id = json["reader_id"].toInteger();
+    qlonglong interlocutor_id = json["interlocutor_id"].toInteger();
+    auto messages = db.getPrivateMessages(reader_id, interlocutor_id, offset);
+    QJsonArray jsonArray;
+    for (int i = 0; i < messages.size(); i++) {
+        jsonArray.append(messages[i]->serialiseJson().array());
+    }
+
+    QJsonDocument jsonDocument(jsonArray); // Создание JSON-документа из JSON-массива
+
+    return jsonDocument;
+}
+
+bool MainThread::validateUserSession(QJsonDocument json)
+{
+    qlonglong user_id = json["user_id"].toInteger();
+    qlonglong user_session_key = json["user_session_key"].toInteger();
+    auto user = db.getUserByID(user_id);
+    if (user) {
+        auto s = user->validateSessionKey(user_session_key);
+        auto b = !user->isBanned();
+        return s && b;
+    }
+    return false;
+}
+
+QJsonDocument MainThread::sendMessage(QJsonDocument json)
+{
+    qlonglong reader_id = json["reader_id"].toInteger();
+    qlonglong interlocutor_id = json["interlocutor_id"].toInteger();
+    QString text = json["text"].toString();
+    std::shared_ptr<chat::Message> message = nullptr;
+    if (json["status"] == "private") {
+        message = std::make_shared<chat::Message>(reader_id, interlocutor_id, text, 0);
+    } else {
+        message = std::make_shared<chat::Message>(reader_id, text, 0);
+    }
+    QJsonObject jobj;
+
+    jobj["response"] = db.createMessage(message) ? "OK" : "fail";
+    QJsonDocument jdoc(jobj);
+    return jdoc;
 }
 
 MainThread::MainThread(MainWindow *mainWindow, Server *server, QObject *parent)

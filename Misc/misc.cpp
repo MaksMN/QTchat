@@ -8,11 +8,11 @@ Misc::Misc()
     
 }
 
-ullong Misc::randomKey()
+qlonglong Misc::randomKey()
 {
     std::random_device rd;
     std::mt19937_64 generator(rd());
-    std::uniform_int_distribution<unsigned long long> distribution;
+    std::uniform_int_distribution<long long> distribution;
     return distribution(generator);
 }
 

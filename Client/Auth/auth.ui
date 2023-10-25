@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>303</width>
-    <height>280</height>
+    <width>400</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,8 +27,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>303</width>
-    <height>318</height>
+    <width>500</width>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -102,7 +102,7 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>admin</string>
+                   <string/>
                   </property>
                   <property name="maxLength">
                    <number>20</number>
@@ -112,7 +112,7 @@
                 <item row="1" column="0">
                  <widget class="QLineEdit" name="loginPass">
                   <property name="text">
-                   <string>1234</string>
+                   <string/>
                   </property>
                   <property name="maxLength">
                    <number>20</number>

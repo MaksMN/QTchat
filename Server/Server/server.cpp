@@ -49,6 +49,39 @@ QJsonDocument Server::getUsers(QJsonDocument json)
     return result;
 }
 
+QJsonDocument Server::getPubMessages(QJsonDocument json)
+{
+    QJsonDocument result;
+    QMetaObject::invokeMethod(mainThread,
+                              "getPubMessages",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QJsonDocument, result),
+                              Q_ARG(QJsonDocument, json));
+    return result;
+}
+
+QJsonDocument Server::getPrivateMessages(QJsonDocument json)
+{
+    QJsonDocument result;
+    QMetaObject::invokeMethod(mainThread,
+                              "getPrivateMessages",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QJsonDocument, result),
+                              Q_ARG(QJsonDocument, json));
+    return result;
+}
+
+QJsonDocument Server::sendMessage(QJsonDocument json)
+{
+    QJsonDocument result;
+    QMetaObject::invokeMethod(mainThread,
+                              "sendMessage",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QJsonDocument, result),
+                              Q_ARG(QJsonDocument, json));
+    return result;
+}
+
 Server::Server(QThread *parent)
     : QThread{parent}
 {
@@ -109,8 +142,31 @@ QJsonDocument Server::serverHandle(QJsonDocument json)
     if (json["command"].toString() == "auth") {
         return authUser(json);
     }
+
+    bool validate_session;
+    QMetaObject::invokeMethod(mainThread,
+                              "validateUserSession",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(bool, validate_session),
+                              Q_ARG(QJsonDocument, json));
+    if (!validate_session) {
+        QJsonObject jobject;
+        jobject["session"] = "fail";
+        QJsonDocument jdoc(jobject);
+        return jdoc;
+    }
     if (json["command"].toString() == "getUsers") {
         return getUsers(json);
+    }
+    if (json["command"].toString() == "getPubMessages") {
+        return getPubMessages(json);
+    }
+
+    if (json["command"].toString() == "getPrivateMessages") {
+        return getPrivateMessages(json);
+    }
+    if (json["command"].toString() == "sendMessage") {
+        return sendMessage(json);
     }
 
     return response;

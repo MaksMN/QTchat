@@ -33,6 +33,10 @@ public slots:
     QJsonDocument registerUser(std::shared_ptr<chat::User> user);
     QJsonDocument authUser(QString login, QString pass);
     QJsonDocument getUsers(QJsonDocument json);
+    QJsonDocument getPubMessages(QJsonDocument json);
+    QJsonDocument getPrivateMessages(QJsonDocument json);
+    bool validateUserSession(QJsonDocument json);
+    QJsonDocument sendMessage(QJsonDocument json);
 
 public:
     explicit MainThread(MainWindow *_mainWindow, QObject *parent = nullptr);

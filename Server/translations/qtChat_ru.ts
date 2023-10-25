@@ -60,7 +60,7 @@
         <location filename="../build/debug/Server_autogen/include/ui_mainwindow.h" line="265"/>
         <location filename="../build/release/Server_autogen/include/ui_mainwindow.h" line="265"/>
         <source>Messages actions</source>
-        <translation>Действия с соощениями</translation>
+        <translation>Действия с сообщениями</translation>
     </message>
     <message>
         <location filename="../MainWindow/mainwindow.ui" line="223"/>
@@ -96,72 +96,72 @@
     <message>
         <location filename="../Strings/strings.cpp" line="4"/>
         <source>The server will use the default settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер будет использовать настройки по умолчанию</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="5"/>
         <source>Message not selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщение не выбрано</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="6"/>
         <source>Failed to disconnect the user</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось отключить пользователя</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="7"/>
         <source>User session is disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Сеанс пользователя отключен</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="8"/>
         <source>Ban</source>
-        <translation type="unfinished">Бан</translation>
+        <translation>Бан</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="9"/>
         <source>Unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Разбан</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="10"/>
         <source>Not applicable for service users</source>
-        <translation type="unfinished"></translation>
+        <translation>Не применимо для сервисных пользователей</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="11"/>
         <source>Cannot delete service users</source>
-        <translation type="unfinished"></translation>
+        <translation>Нельзя удалить сервисных пользователей</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="12"/>
         <source>User not selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь не выбран</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="13"/>
         <source>Database query error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка запроса к базе данных</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="14"/>
         <source>Database error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка базы данных</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="15"/>
         <source>Failed connection to the database</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось установить соединение с базой данных</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="16"/>
         <source>Connection to the database was successful</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключение к базе данных выполнено успешно</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="17"/>
         <source>Connecting to the database server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключение к серверу базы данных...</translation>
     </message>
     <message>
         <location filename="../Strings/strings.cpp" line="19"/>

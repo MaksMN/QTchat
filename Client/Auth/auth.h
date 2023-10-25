@@ -20,6 +20,7 @@ public:
     bool authorized() const;
 
     std::shared_ptr<chat::User> user = nullptr;
+    void setLabelMsgText(QString &text);
 
 private slots:
     void on_regButton_clicked();

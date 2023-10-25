@@ -2,13 +2,29 @@
 #include <QEventLoop>
 #include <QJsonArray>
 #include <QTimer>
+#include "SimpleIni.h"
+#include "commands.h"
 #include "mainwindow.h"
+Client::Client()
+{
+    CSimpleIniA ini; // https://github.com/brofield/simpleini/tree/master
+    SI_Error rc = ini.LoadFile("server.ini");
+    if (rc < 0) {
+    } else {
+        QString svaddr = ini.GetValue("DB", "server", "127.0.0.1");
+        serverAddress.setAddress(svaddr);
+        QString port = ini.GetValue("DB", "port", "7777");
+        serverPort = static_cast<qint16>(port.toInt());
+    }
+}
 
 void Client::Update()
 {
     if (!socketWait)
         return;
-    int offset = mainWindow->getTopUserItem() + 1;
+
+    // список пользователей
+    int offset = getTopUserItem() + 1;
     QJsonObject request;
     request["command"] = "getUsers";
     request["TopUserItem"] = offset;
@@ -24,13 +40,125 @@ void Client::Update()
             users.push_back(user);
         }
     }
+
     QMetaObject::invokeMethod(mainWindow,
                               "updateUsers",
                               Qt::QueuedConnection,
                               Q_ARG(QVector<std::shared_ptr<chat::User>>, users));
+
+    Commands command = public_chat;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getCommand",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(Commands, command));
+    // публичные сообщения
+    if (command == public_chat) {
+        int offset = getTopMessageItem();
+        QJsonObject request;
+        request["command"] = "getPubMessages";
+        request["TopMessageItem"] = offset;
+        QJsonDocument jsonDoc(request);
+        QJsonDocument response = send(jsonDoc, 3);
+
+        QVector<std::shared_ptr<chat::Message>> messages;
+        if (response.isArray()) {
+            auto jsonArray = response.array();
+            for (const QJsonValue &value : jsonArray) {
+                std::shared_ptr<chat::Message> message = std::make_shared<chat::Message>();
+                QJsonArray jArray = value.toArray();
+                QJsonDocument jDocument(jArray);
+                message->deserialiseJson(jDocument);
+                messages.push_back(message);
+            }
+        }
+        QMetaObject::invokeMethod(mainWindow,
+                                  "updateMessages",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QVector<std::shared_ptr<chat::Message>>, messages));
+    }
+    // личные сообщения
+    if (command == private_chat) {
+        qlonglong current_user_id;
+        QMetaObject::invokeMethod(mainWindow,
+                                  "getCurrentUserID",
+                                  Qt::BlockingQueuedConnection,
+                                  Q_RETURN_ARG(qlonglong, current_user_id));
+        qlonglong selected_user_id;
+        QMetaObject::invokeMethod(mainWindow,
+                                  "getSelectedUserID",
+                                  Qt::BlockingQueuedConnection,
+                                  Q_RETURN_ARG(qlonglong, selected_user_id));
+        int offset = getTopMessageItem();
+        QJsonObject request;
+        request["command"] = "getPrivateMessages";
+        request["TopMessageItem"] = offset;
+        request["reader_id"] = current_user_id;
+        request["interlocutor_id"] = selected_user_id;
+
+        QJsonDocument jsonDoc(request);
+        QJsonDocument response = send(jsonDoc, 3);
+
+        QVector<std::shared_ptr<chat::Message>> messages;
+        if (response.isArray()) {
+            auto jsonArray = response.array();
+            for (const QJsonValue &value : jsonArray) {
+                std::shared_ptr<chat::Message> message = std::make_shared<chat::Message>();
+                QJsonArray jArray = value.toArray();
+                QJsonDocument jDocument(jArray);
+                message->deserialiseJson(jDocument);
+                messages.push_back(message);
+            }
+        }
+        QMetaObject::invokeMethod(mainWindow,
+                                  "updateMessages",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(QVector<std::shared_ptr<chat::Message>>, messages));
+    }
 }
-QJsonDocument Client::send(QJsonDocument json, int timeout)
+
+int Client::getTopUserItem()
 {
+    int result;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getTopUserItem",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(int, result));
+    return result;
+}
+
+int Client::getTopMessageItem()
+{
+    int result;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getTopMessageItem",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(int, result));
+    return result;
+}
+
+QJsonDocument Client::addSessionInJson(QJsonDocument &json)
+{
+    qlonglong user_id;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getCurrentUserID",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(qlonglong, user_id));
+    qlonglong user_session_key;
+    QMetaObject::invokeMethod(mainWindow,
+                              "getCurrentUserSessionKey",
+                              Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(qlonglong, user_session_key));
+    auto jobject = json.object();
+    jobject["user_id"] = user_id;
+    jobject["user_session_key"] = user_session_key;
+    QJsonDocument jdoc(jobject);
+    return jdoc;
+}
+
+QJsonDocument Client::send(QJsonDocument json, int timeout, bool add_session)
+{
+    if (add_session)
+        json = addSessionInJson(json);
     QByteArray message = json.toJson();
     QUdpSocket udpSocket;
     udpSocket.writeDatagram(message, serverAddress, serverPort);
@@ -53,6 +181,11 @@ QJsonDocument Client::send(QJsonDocument json, int timeout)
                 continue;
             if (!jsonDoc.isNull()) {
                 if (!jsonDoc.isEmpty()) {
+                    if (jsonDoc["session"] == "fail") {
+                        QJsonDocument jdoc;
+                        close();
+                        return jdoc;
+                    }
                     return jsonDoc;
                 }
             }
@@ -91,12 +224,13 @@ void Client::handleMainWindowClosed()
 void Client::run()
 {
     QTimer timer;
-    timer.setInterval(2000); // Интервал в миллисекундах (1000 мс = 1 сек)
+    timer.setInterval(1000); // Интервал в миллисекундах (1000 мс = 1 сек)
     timer.setSingleShot(false); // Установите в true, если нужен однократный запуск таймера
 
     QObject::connect(&timer, &QTimer::timeout, [&]() {
         if (!socketWait) {
             timer.stop();
+            QMetaObject::invokeMethod(mainWindow, "app_close_no", Qt::QueuedConnection);
             return;
         }
 

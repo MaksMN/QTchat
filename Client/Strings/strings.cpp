@@ -1,6 +1,11 @@
 #include "strings.h"
 
 /*Strings*/
+const QString Strings::MESSAGE_HAS_BEEN_SENT = QObject::tr("Message has been sent");
+const QString Strings::FAILED_TO_SEND_MESSAGE = QObject::tr("Failed to send message");
+const QString Strings::YOU_HAVE_TO_ENTER_THE_TEXT = QObject::tr("You have to enter the text");
+const QString Strings::SESSION_TERMINATED_BY_SERVER = QObject::tr("The session is terminated by the server");
+const QString Strings::FORBIDDEN_PERSONAL_MESSAGES_YOURSELF = QObject::tr("It is forbidden to have personal conversations with yourself");
 const QString Strings::USER_BANNED = QObject::tr("User banned");
 const QString Strings::INVALID_USERNAME_OR_PASSWORD = QObject::tr("Unsuccessful. Invalid username or password.");
 const QString Strings::EMAIL_BUSY = QObject::tr("Email busy");

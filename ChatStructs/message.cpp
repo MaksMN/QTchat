@@ -1,4 +1,6 @@
 #include "message.h"
+#include <QJsonArray>
+#include <memory>
 
 chat::Message::Message() {}
 
@@ -17,6 +19,51 @@ void Message::setRecipient(std::shared_ptr<chat::User> newRecipient)
 QString Message::pubDateTime()
 {
     return Misc::stampTotime(_published);
+}
+
+QJsonDocument Message::serialiseJson()
+{
+    QJsonObject msg;
+    msg["id"] = _id;
+    msg["author_id"] = _author_id;
+    msg["recipient_id"] = _recipient_id;
+    msg["text"] = _text;
+    msg["published"] = _published;
+    msg["status"] = (int) _status;
+
+    if (!_author)
+        _author = std::make_shared<chat::User>();
+    if (!_recipient)
+        _recipient = std::make_shared<chat::User>();
+
+    QJsonObject author = _author->serialiseJson();
+    QJsonObject recipient = _recipient->serialiseJson();
+
+    QJsonArray jsonArray;
+    jsonArray.append(msg);
+    jsonArray.append(author);
+    jsonArray.append(recipient);
+    QJsonDocument jsonDoc(jsonArray);
+    return jsonDoc;
+}
+
+void Message::deserialiseJson(const QJsonDocument &jsonDoc)
+{
+    QJsonArray jsonArray = jsonDoc.array();
+
+    QJsonObject jsonObject = jsonArray[0].toObject();
+    _id = jsonObject["id"].toInteger(0);
+    _author_id = jsonObject["author_id"].toInteger(0);
+    _recipient_id = jsonObject["recipient_id"].toInteger();
+    _text = jsonObject["text"].toString();
+    _published = jsonObject["published"].toInteger();
+    _status = (msg::status) jsonObject["status"].toInt();
+
+    _author = std::make_shared<chat::User>();
+    _recipient = std::make_shared<chat::User>();
+
+    _author->deserialiseJson(jsonArray[1].toObject());
+    _recipient->deserialiseJson(jsonArray[2].toObject());
 }
 
 std::shared_ptr<chat::User> Message::author() const

@@ -92,8 +92,10 @@ public:
     void setAuthor(std::shared_ptr<chat::User> newAuthor);
     std::shared_ptr<chat::User> recipient() const;
     void setRecipient(std::shared_ptr<chat::User> newRecipient);
-
     QString pubDateTime();
+
+    QJsonDocument serialiseJson();
+    void deserialiseJson(const QJsonDocument &jsonDoc);
 };
 } // namespace chat
 #endif // MESSAGE_H

@@ -11,7 +11,7 @@ class Misc
 public:
     Misc();
 
-    static ullong randomKey();
+    static qlonglong randomKey();
 
     static void msgBox(QString text, QString infText);
 
